@@ -3,22 +3,22 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app-component/app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RecipeModule} from './modules/recipe-module/recipe.module';
-import {AppRoutingModule} from './modules/app-routing-module/app-routing.module';
+import {RecipeModule} from './modules/recipes/recipe.module';
+import {AppRoutingModule} from './modules/app-routing/app-routing.module';
 import {NavbarComponent} from './navbar-component/navbar.component';
-import {HomeComponent} from './home/home.component';
+import {HomeModule} from './modules/home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    HomeComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     AppRoutingModule,
     RecipeModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

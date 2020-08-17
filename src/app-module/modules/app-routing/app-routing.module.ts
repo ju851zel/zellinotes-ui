@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {RecipeOverviewComponent} from '../recipe-module/recipe-overview-component/recipe-overview.component';
-import {HomeComponent} from '../../home/home.component';
+import {RecipeOverviewComponent} from '../recipes/recipe-overview-component/recipe-overview.component';
+import {HomeComponent} from '../home/home-component/home.component';
 
 
 const routes: Routes = [
