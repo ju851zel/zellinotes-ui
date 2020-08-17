@@ -1,0 +1,86 @@
+<div id="recipes" class="container">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary mx-1"
+              title="Create a new recipe"
+              (click)="createRecipe()">
+        <bi name="plus"></bi>
+      </button>
+    </div>
+  </div>
+</div>
+<!--      <b-button v-b-tooltip.focus-->
+<!--                href="#" tabindex="0"-->
+<!--                variant="outline-primary"-->
+<!--                class="mx-1"-->
+<!--                :disabled="!isSignedIn"-->
+<!--                title="Fetch recipes from Server"-->
+<!--                @click="fetchCurrentTabRecipes()">-->
+<!--        <b-icon icon="cloud-download"/>-->
+<!--      </b-button>-->
+<!--      <b-button v-b-modal.modalUploadRecipes-->
+<!--                v-b-tooltip.focus-->
+<!--                href="#" tabindex="0"-->
+<!--                class="mx-1"-->
+<!--                :disabled="!isSignedIn"-->
+<!--                variant="outline-primary"-->
+<!--                title="Upload recipes as JSON">-->
+<!--        <b-icon icon="cloud-upload"/>-->
+<!--      </b-button>-->
+<!--      <modal-upload-recipes :user-id="activeUserId"/>-->
+<!--      <b-button v-b-tooltip.focus-->
+<!--                href="#" tabindex="0"-->
+<!--                class="mx-1"-->
+<!--                :disabled="!isSignedIn"-->
+<!--                variant="outline-primary"-->
+<!--                title="Download all recipes"-->
+<!--                @click="downloadRecipes()">-->
+<!--        <b-icon icon="download"/>-->
+<!--      </b-button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <b-row class="mt-3">-->
+<!--    <b-col>-->
+<!--      <b-tabs v-model="currentTab" content-class="mt-3">-->
+<!--        <b-tab v-for="user of getUsersWithRecipes" :key="user.userId" lazy-->
+<!--               :title="user.userAlias">-->
+<!--          <b-col v-if="user.fetching">-->
+<!--            <b-container class="text-center">-->
+<!--              <b-spinner>Loading ...</b-spinner>-->
+<!--            </b-container>-->
+<!--          </b-col>-->
+<!--          <b-container v-if="!user.fetching && user.recipes.length === 0">-->
+<!--            <div class="d-flex text-center">-->
+<!--              <b-icon icon="arrow-up"-->
+<!--                      shift-h="-5.5"-->
+<!--                      font-scale="5"-->
+<!--                      variant="success"/>-->
+<!--              <h2>You don't have any recipes. Create one.</h2>-->
+<!--            </div>-->
+<!--          </b-container>-->
+<!---->
+<!--          <b-card-group columns class="align-content-center">-->
+<!--            <div v-for="recipe of user.recipes" :key="recipe.id">-->
+<!--              <b-overlay :show="user.fetching && getUsersWithRecipes.length === 0">-->
+<!--                <b-card :title="recipe.title"-->
+<!--                        img-top-->
+<!--                        :img-src="recipe.image"-->
+<!--                        align="center"-->
+<!--                        tag="article"-->
+<!--                        class="text-center">-->
+<!--                  <b-card-text>{{ recipe.description }}</b-card-text>-->
+<!--                  <b-button variant="success"-->
+<!--                            @click="navigateToSingleRecipe(user.userId, recipe.id)">-->
+<!--                    Open-->
+<!--                    <b-icon-egg-fried/>-->
+<!--                  </b-button>-->
+<!--                </b-card>-->
+<!--              </b-overlay>-->
+<!--            </div>-->
+<!--          </b-card-group>-->
+<!--        </b-tab>-->
+<!--      </b-tabs>-->
+<!--    </b-col>-->
+<!--  </b-row>-->
+<!---->
+<!--</div>-->
