@@ -14,6 +14,8 @@ import {
   Plus,
   Trash,
   Unlock,
+  Bullseye,
+  People,
   Files,
 } from 'ng-bootstrap-icons/icons';
 
@@ -29,7 +31,9 @@ const icons = {
   Trash,
   Lock,
   Files,
+  Bullseye,
   ArrowLeft,
+  People,
   EggFried
 };
 
