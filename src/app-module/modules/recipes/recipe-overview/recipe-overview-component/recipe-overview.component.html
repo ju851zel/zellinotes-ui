@@ -1,0 +1,36 @@
+<div id="recipes" class="container-fluid mt-3">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary mx-1"
+              title="Create a new recipe"
+              (click)="createRecipe()">
+        <bi name="plus"></bi>
+      </button>
+      <button class="btn btn-primary mx-1"
+              title="Fetch recipes from Server"
+              (click)="fetchCurrentTabRecipes()">
+        <bi name="cloud-download"></bi>
+      </button>
+
+      <button class=" btn btn-primary mx-1"
+              title="Upload recipes as JSON"
+              data-toggle="modal"
+              data-target="#modalUploadRecipes">
+        <bi name="cloud-upload"></bi>
+      </button>
+      <app-upload-recipes-modal></app-upload-recipes-modal>
+
+      <button class="btn btn-primary mx-1"
+              title="Download all recipes"
+              (click)="downloadRecipes()">
+        <bi name="download"></bi>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <app-recipe-cards></app-recipe-cards>
+    </div>
+  </div>
+</div>

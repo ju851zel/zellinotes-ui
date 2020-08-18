@@ -1,20 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {RecipeService} from '../../../../services/recipe-service/recipe.service';
+import {Difficulty, Recipe} from '../../../../model/recipe';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-recipe-overview',
   templateUrl: './recipe-overview.component.html',
-  styleUrls: ['./recipe-overview.component.css']
+  styles: [],
 })
 export class RecipeOverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private recipeService: RecipeService, private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
+    let recipeId = this.activatedRoute.snapshot.params.recipeId;
+    console.log(recipeId);
+  }
+
+  createRecipe(): void {
+    const recipe = new Recipe(
+      '0',
+      '30',
+      new Date(),
+      new Date(),
+      [],
+      1,
+      Difficulty.EASY,
+      'test description',
+      'test title',
+      new Set(),
+      'https://img.taste.com.au/-RGbsS2h/taste/2019/05/chocolate-and-nutella-smores-cake-149475-2.jpg',
+      [],
+      2);
+    this.recipeService.addRecipe(recipe);
   }
 
   // tslint:disable-next-line:typedef
-  createRecipe() {
+  fetchCurrentTabRecipes() {
     //
+  }
+
+
+  // tslint:disable-next-line:typedef
+  downloadRecipes() {
+    //
+  }
+
+  // tslint:disable-next-line:typedef
+  recipes: any;
+
+  navigateToSingleRecipe(id: any) {
+
+
   }
 }
 
