@@ -1,0 +1,109 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <button class="mx-1 btn btn-primary"
+              title="Go Back to all recipes"
+              (click)="navigateToRecipes()">
+        <bi name="ArrowLeft"></bi>
+      </button>
+      <button class="mx-1 btn btn-primary"
+              title="Edit recipe"
+              (click)="switchEdit()">
+        <bi icon="Unlock"></bi>
+        <bi icon="Lock"></bi>
+      </button>
+      <button class="mx-1 btn btn-primary"
+              title="Delete recipe"
+              (click)="deleteRecipe()">
+        <bi name="Trash"></bi>
+      </button>
+      <button class="mx-1 btn btn-primary"
+              title="Export(download) recipe"
+              (click)="downloadRecipe()">
+        <bi name="Download"></bi>
+      </button>
+      <button class="mx-1 btn btn-primary"
+              title="Duplicate"
+              (click)="duplicate()">
+        <bi name="Files"></bi>
+      </button>
+    </div>
+  </div>
+  <div class="row align-content-center">
+    <div class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
+      <app-recipe-upload-crop-image [recipeId]="recipeId"></app-recipe-upload-crop-image>
+    </div>
+    <div class="col-sm-12 col-md-7 mt-3 px-4">
+      <div id="title">
+        <h2 *ngIf="!edit">
+          TITLE of the recipe
+        </h2>
+        <form>
+          <label for="recipe-title" class="form-label">Email address</label>
+          <input type="text" class="form-control" placeholder="Spaghetti Carbonara" id="recipe-title"
+                 aria-describedby="recipe-title">
+        </form>
+      </div>
+      <div id="subtitle">
+        <h4 *ngIf="!edit">
+          DESCRIPTION
+        </h4>
+        <form>
+          <label for="recipe-description" class="form-label">Email address</label>
+          <textarea class="form-control" placeholder="A famous italian recipe." id="recipe-description"
+                    aria-describedby="recipe-title"></textarea>
+        </form>
+      </div>
+      <div class="row mt-4 align-content-between">
+        <!--        <div class="col">-->
+        <!--          <spin-button-with-icon :formatter="difficultyFormatter"-->
+        <!--                                 :max="2" :min="0"-->
+        <!--                                 :user-id="userId"-->
+        <!--                                 :recipe-id="recipeId"-->
+        <!--                                 attribute="difficulty"-->
+        <!--                                 icon="bullseye"-->
+        <!--                                 icon-tooltip="Difficulty"/>-->
+        <!--        </div>-->
+        <!--        <div class="col">-->
+        <!--          <spin-button-with-icon :formatter="servingsFormatter"-->
+        <!--                                 :max="4" :min="1"-->
+        <!--                                 :user-id="userId"-->
+        <!--                                 :recipe-id="recipeId"-->
+        <!--                                 attribute="defaultServings"-->
+        <!--                                 icon="people"-->
+        <!--                                 icon-tooltip="Amount of Serving"/>-->
+        <!--        </div>-->
+        <!--        <div class="col">-->
+        <!--          <spin-button-with-icon :formatter="totalTimeFormatter"-->
+        <!--                                 :max="300" :min="10" :step="5"-->
+        <!--                                 :user-id="userId"-->
+        <!--                                 :recipe-id="recipeId"-->
+        <!--                                 attribute="totalTime"-->
+        <!--                                 icon="clock"-->
+        <!--                                 icon-tooltip="Total time"/>-->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="mt-3 col-sm-12">
+    <!--      <recipe-tags :recipe-id="recipeId" :user-id="userId"/>-->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8 mt-3">
+    <!--      <instructions :recipe-id="recipeId" :user-id="userId"/>-->
+  </div>
+  <div class="col-md-4 mt-3">
+    <!--      <ingredients :recipe-id="recipeId" :user-id="userId"/>-->
+  </div>
+</div>
+<div class="row">
+  <div class="col mt-3">
+    <!--      <b-form-text size="sm" inline text-variant="secondary">-->
+    <!--        <b-icon-clock-history/>-->
+    <!--        {{ this.$moment().from(recipe.changed, true) }}-->
+    <!--      </b-form-text>-->
+  </div>
+</div>
+
