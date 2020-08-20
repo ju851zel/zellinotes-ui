@@ -1,1 +1,33 @@
-<p>ingredients works!</p>
+<div class="border rounded border-grey p-2">
+  <div>
+    <h4 class="form-label d-inline">Ingredients</h4>
+    <button class="btn btn-primary">
+      <bi name="Plus-Circle"></bi>
+    </button>
+    <button class="btn btn-primary float-right" type="button" data-toggle="collapse"
+            data-target="#collapsingIngredients">
+      <bi name="Chevron-Up"></bi>
+    </button>
+    <div class="row">
+      <div class="col">
+        <div>
+          No Ingredients yet
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapse" id="collapsingIngredients">
+    <div>
+      <div class="list-group list-group-flush">
+        <div class="list-group-item">
+          <app-single-ingredient></app-single-ingredient>
+          <p class="m-0">
+            {{ ingredient.amount }} {{ ingredient.type }} {{ ingredient.article }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

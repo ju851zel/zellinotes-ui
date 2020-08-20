@@ -11,6 +11,7 @@ import { RecipeUploadCropImageComponent } from './single-recipe/recipe-upload-cr
 import { RecipeTagsComponent } from './single-recipe/recipe-tags-component/recipe-tags.component';
 import { InstructionsComponent } from './single-recipe/instructions-component/instructions.component';
 import { IngredientsComponent } from './single-recipe/ingredients-somponent/ingredients.component';
+import { SingleIngredientComponent } from './single-recipe/single-ingredient/single-ingredient.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { IngredientsComponent } from './single-recipe/ingredients-somponent/ingr
     RecipeUploadCropImageComponent,
     RecipeTagsComponent,
     InstructionsComponent,
-    IngredientsComponent
+    IngredientsComponent,
+    SingleIngredientComponent
   ],
   imports: [
     CommonModule,
