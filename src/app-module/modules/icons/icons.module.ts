@@ -2,21 +2,25 @@ import {NgModule} from '@angular/core';
 
 import {BootstrapIconsModule} from 'ng-bootstrap-icons';
 import {
+  allIcons,
   App,
-  ArrowLeft,
+  ArrowLeftCircle,
+  ArrowsMove,
   ArrowUp,
   Bookmark,
+  Bullseye,
+  ChevronUp,
   CloudDownload,
   CloudUpload,
   Download,
   EggFried,
-  Lock,
-  Plus,
-  Trash,
-  Unlock,
-  Bullseye,
-  People,
   Files,
+  Lock,
+  People,
+  Plus,
+  PlusCircle,
+  Trash,
+  Unlock
 } from 'ng-bootstrap-icons/icons';
 
 const icons = {
@@ -32,14 +36,18 @@ const icons = {
   Lock,
   Files,
   Bullseye,
-  ArrowLeft,
+  ArrowLeftCircle,
   People,
-  EggFried
+  ArrowsMove,
+  EggFried,
+  ChevronUp,
+  PlusCircle
 };
 
+// todo change to icosn and add only the ones desired
 @NgModule({
   imports: [
-    BootstrapIconsModule.pick(icons)
+    BootstrapIconsModule.pick(allIcons)
   ],
   exports: [
     BootstrapIconsModule
