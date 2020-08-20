@@ -9,6 +9,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SingleRecipeComponent } from './single-recipe/single-recipe-component/single-recipe.component';
 import { RecipeUploadCropImageComponent } from './single-recipe/recipe-upload-crop-image-component/recipe-upload-crop-image.component';
 import { RecipeTagsComponent } from './single-recipe/recipe-tags-component/recipe-tags.component';
+import { InstructionsComponent } from './single-recipe/instructions-component/instructions.component';
+import { IngredientsComponent } from './single-recipe/ingredients-somponent/ingredients.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { RecipeTagsComponent } from './single-recipe/recipe-tags-component/recip
     RecipeCardsComponent,
     SingleRecipeComponent,
     RecipeUploadCropImageComponent,
-    RecipeTagsComponent
+    RecipeTagsComponent,
+    InstructionsComponent,
+    IngredientsComponent
   ],
   imports: [
     CommonModule,
