@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-recipe-tags',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recipe-tags.component.css']
 })
 export class RecipeTagsComponent implements OnInit {
+
+  @Input()
+  private recipeId: string;
 
   constructor() { }
 
