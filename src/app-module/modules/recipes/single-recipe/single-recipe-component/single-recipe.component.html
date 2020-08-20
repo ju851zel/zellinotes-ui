@@ -4,13 +4,13 @@
       <button class="mx-1 btn btn-primary"
               title="Go Back to all recipes"
               (click)="navigateToRecipes()">
-        <bi name="ArrowLeft"></bi>
+        <bi name="Arrow-Left"></bi>
       </button>
       <button class="mx-1 btn btn-primary"
               title="Edit recipe"
               (click)="switchEdit()">
-        <bi icon="Unlock"></bi>
-        <bi icon="Lock"></bi>
+        <bi name="Unlock"></bi>
+        <bi name="Lock"></bi>
       </button>
       <button class="mx-1 btn btn-primary"
               title="Delete recipe"
@@ -36,14 +36,14 @@
     <div class="col-sm-12 col-md-7 mt-3 px-4">
       <div id="title">
         <form>
-          <label for="recipe-title" class="form-label"><h3>Recipe Title</h3></label>
+          <label for="recipe-title" class="form-label my-0"><h3>Recipe Title</h3></label>
           <input type="text" class="form-control" placeholder="Spaghetti Carbonara" id="recipe-title"
                  aria-describedby="recipe-title">
         </form>
       </div>
-      <div id="description">
+      <div id="description"class="mt-4">
         <form>
-          <label for="recipe-description" class="form-label"><h4 class="form-label">Description</h4></label>
+          <label for="recipe-description" class="form-label my-0"><h4 class="form-label">Description</h4></label>
           <textarea class="form-control" placeholder="A famous italian recipe." id="recipe-description"
                     aria-describedby="recipe-title"></textarea>
         </form>
@@ -66,6 +66,8 @@
             <button type="button" class="btn btn-secondary">4</button>
           </div>
         </div>
+      </div>
+      <div class="row mt-4 align-content-between">
         <div class="col">
           <label for="cooking-time-range" class="form-label"><h4 class="form-label">Cooking time</h4></label>
           <input type="range" class="form-range" min="15" max="300" step="5" id="cooking-time-range">
@@ -75,12 +77,12 @@
   </div>
   <div class="row">
     <div class="mt-3 col-sm-12">
-      <recipe-tags :recipe-id="recipeId" :user-id="userId"/>
+      <app-recipe-tags [recipeId]="recipeId"></app-recipe-tags>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8 mt-3">
-      <!--      <instructions :recipe-id="recipeId" :user-id="userId"/>-->
+    <div class="col-md-8 mt-2">
+      <app-instructions [recipeId]="recipeId"></app-instructions>
     </div>
     <div class="col-md-4 mt-3">
       <!--      <ingredients :recipe-id="recipeId" :user-id="userId"/>-->
