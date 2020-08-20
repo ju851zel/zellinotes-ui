@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-instructions',
@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstructionsComponent implements OnInit {
 
-  constructor() { }
+
+  @Input()
+  private recipeId: string;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

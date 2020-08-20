@@ -1,1 +1,48 @@
-<p>instructions works!</p>
+<div class="border rounded border-grey p-2">
+  <div>
+    <h4 class="form-label d-inline">Instructions</h4>
+    <button class="btn btn-primary">
+      <bi name="Plus-Circle"></bi>
+    </button>
+    <button class="btn btn-primary float-right" type="button" data-toggle="collapse"
+            data-target="#collapsingInstructions">
+      <bi name="Chevron-Up"></bi>
+    </button>
+    <div class="row">
+      <div class="col">
+        <div>
+          No Instruction yet
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapse" id="collapsingInstructions">
+    <ul id="list-instructions" class="list-group list-group-flush instructionsGroup">
+      <li class="list-group-item d-flex">
+        <h3 class="mr-3 mt-1">1.</h3>
+        <textarea class="form-control" placeholder="Boil water."></textarea>
+        <div class="col-sm-2 text-center pr-0">
+          <button class="btn btn-primary">
+            <bi name="Trash"></bi>
+          </button>
+          <button class="btn btn-primary" disabled>
+            <bi name="Arrows-Move"></bi>
+          </button>
+        </div>
+      </li>
+      <li class="list-group-item d-flex">
+        <h3 class="mr-3 mt-1">1.</h3>
+        <textarea class="form-control" placeholder="Boil water."></textarea>
+        <div class="col-sm-2 text-center pr-0">
+          <button class="btn btn-primary">
+            <bi name="Trash"></bi>
+          </button>
+          <button class="btn btn-primary" disabled>
+            <bi name="Arrows-Move"></bi>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
