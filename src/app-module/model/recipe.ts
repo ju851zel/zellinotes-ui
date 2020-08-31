@@ -7,6 +7,17 @@ export class Difficulty {
                       private description: string) {
   }
 
+  isEasyDifficulty(): boolean {
+    return Difficulty.EASY === this;
+  }
+
+  isMediumDifficulty(): boolean {
+    return Difficulty.MEDIUM === this;
+  }
+
+  isHardDifficulty(): boolean {
+    return Difficulty.HARD === this;
+  }
 }
 
 export class MeasurementUnit {
@@ -25,26 +36,185 @@ export class MeasurementUnit {
 
 
 export class Ingredient {
-  id: string;
-  amount: number;
-  title: string;
-  measurementUnit: MeasurementUnit;
+  constructor(readonly id: string,
+              readonly amount: number,
+              readonly title: string,
+              readonly measurementUnit: MeasurementUnit) {
+  }
 }
 
 export class Recipe {
-  constructor(public id: string,
-              public totalTime: string,
-              public created: Date,
-              public lastModified: Date,
-              public ingredients: Array<Ingredient>,
-              public version: number,
-              public difficulty: Difficulty,
-              public description: string,
-              public title: string,
-              public tags: Set<string>,
-              public image: string,
-              public instructions: Array<string>,
-              public defaultServings: number) {
+  constructor(readonly id: string,
+              readonly totalTime: number,
+              readonly created: Date,
+              readonly lastModified: Date,
+              readonly ingredients: Array<Ingredient>,
+              readonly version: number,
+              readonly difficulty: Difficulty,
+              readonly description: string,
+              readonly title: string,
+              readonly tags: Set<string>,
+              readonly image: string,
+              readonly instructions: Array<string>,
+              readonly defaultServings: number) {
   }
 
+  copyButTitle(newTitle: string): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      newTitle,
+      this.tags,
+      this.image,
+      this.instructions,
+      this.defaultServings);
+  }
+
+  copyButDescription(newDescription: string): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      newDescription,
+      this.title,
+      this.tags,
+      this.image,
+      this.instructions,
+      this.defaultServings);
+  }
+
+  copyButDifficulty(difficulty: Difficulty): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      this.instructions,
+      this.defaultServings);
+  }
+
+  copyButDefaultServings(servings: number): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      this.instructions,
+      servings);
+  }
+
+  copyButTotalTime(totalTime: number): Recipe {
+    return new Recipe(
+      this.id,
+      totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      this.instructions,
+      this.defaultServings);
+  }
+
+  copyButTags(tags: Set<string>): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      tags,
+      this.image,
+      this.instructions,
+      this.defaultServings);
+  }
+
+  copyButAddInstruction(instruction: string): Recipe {
+    const instructions = Object.assign([], this.instructions);
+    instructions.push(instruction);
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      instructions,
+      this.defaultServings);
+  }
+
+  copyButInstructions(instructions: Array<string>): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      instructions,
+      this.defaultServings);
+  }
+
+  copyButChangeInstruction(index: number, instruction: string): Recipe {
+    const instructions = [...this.instructions];
+    instructions[index] = instruction;
+    console.log('new instructions', instructions);
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      this.ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      instructions,
+      this.defaultServings);
+  }
 }
+
