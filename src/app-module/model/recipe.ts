@@ -59,6 +59,20 @@ export class Ingredient {
       this.measurementUnit
     );
   }
+
+  defined(): boolean {
+    return !!this.amount &&
+      !!this.title &&
+      this.title.length !== 0 && !!this.measurementUnit;
+  }
+
+  partlyDefined(): boolean {
+    return !!this.amount || !!this.measurementUnit || !this.title;
+  }
+
+  notDefined(): boolean {
+    return !!this.amount && !!this.measurementUnit && !this.title;
+  }
 }
 
 export class Recipe {
