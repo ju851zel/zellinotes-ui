@@ -8,92 +8,29 @@
                    (duplicateRecipe)="duplicate()">
   </app-top-buttons>
 
-  <div id="content" class="row align-content-center">
-    <div id="image-left" class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
+  <div class="row align-content-center">
+    <div class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
       <app-image [recipeId]="recipe.id"></app-image>
     </div>
-    <div id="stuff-right" class="col-sm-12 col-md-7 mt-3">
-      <div *ngIf="editable">
-        <label for="recipe-title" class="form-label my-0"><h3>Recipe Title</h3></label>
-        <input type="text" class="form-control"
-               id="recipe-title"
-               placeholder="Spaghetti Carbonara"
-               aria-describedby="recipe-title"
-               #titleInput
-               [value]="recipe.title"
-               (change)="onTitleUpdate(titleInput.value)">
-      </div>
-      <h2 *ngIf="!editable">{{recipe.title}}</h2>
-      <div *ngIf="editable" class="mt-4">
-        <label for="recipe-description-editable" class="form-label my-0"><h4 class="form-label">Description</h4></label>
-        <textarea class="form-control" placeholder="A famous italian recipe." id="recipe-description-editable"
-                  aria-describedby="recipe-title"
-                  [value]="recipe.description"
-                  #descriptionInput
-                  (change)="onDescriptionUpdate(descriptionInput.value)">
-          </textarea>
-      </div>
-      <h4 *ngIf="!editable"> {{ recipe.description }}</h4>
-      <div class="row mt-4 justify-content-around">
-        <div class="col-md-auto col-sm-12 text-center">
-          <bi ngbTooltip="Difficulty" class="text-warning width-50px" name="bullseye"></bi>
-          <p *ngIf="!editable" class="form-label">{{ recipe.difficulty.description }}</p>
-          <p *ngIf="editable" class="form-label">Difficulty</p>
-          <div *ngIf="editable" class="btn-group-sm" role="group" aria-label="Difficulty selection">
-            <button type="button"
-                    [class.active]="recipe.difficulty.isEasyDifficulty()"
-                    class="btn btn-outline-primary"
-                    (click)="setDifficultyEasy()">
-              Easy
-            </button>
-            <button type="button"
-                    [class.active]="recipe.difficulty.isMediumDifficulty()"
-                    class="btn btn-outline-primary"
-                    (click)="setDifficultyMedium()">
-              Medium
-            </button>
-            <button type="button"
-                    [class.active]="recipe.difficulty.isHardDifficulty()"
-                    class="btn btn-outline-primary"
-                    (click)="setDifficultyHard()">
-              Hard
-            </button>
-          </div>
-        </div>
-        <div class="col-md-auto col-sm-12 text-center mt-sm-4 mt-md-0">
-          <bi ngbTooltip="Servings" class="text-warning width-50px" name="people"></bi>
-          <p *ngIf="!editable"
-             class="form-label ">{{ recipe.defaultServings }} {{recipe.defaultServings === 1 ? 'Serving' : 'Servings'}}</p>
-          <p *ngIf="editable" class="form-label ">Servings</p>
-          <div *ngIf="editable" class="btn-group-sm" role="group" aria-label="Servings selection">
-            <button type="button"
-                    *ngFor="let number of [1,2,3,4]"
-                    [class.active]="recipe.defaultServings === number"
-                    class="btn btn-outline-primary"
-                    (click)="setDefaultServings(number)">
-              {{ number }}
-            </button>
-          </div>
-        </div>
-        <div class="col-md-auto col-sm-12 text-center mt-sm-4 mt-md-0">
-          <bi ngbTooltip="Cooking time" class="text-warning width-50px" name="clock"></bi>
-          <p *ngIf="!editable" class="form-label ">{{ totalTimeFormatted(recipe.totalTime.toString()) }} </p>
-          <div *ngIf="editable">
-            <p class="form-label ">Cooking time: {{ totalTimeFormatted(cookingTime.value) }} </p>
-            <input type="range" class="form-range" min="0" max="300" step="5"
-                   id="cooking-time-range"
-                   #cookingTime
-                   (input)="(cookingTime.value)"
-                   (change)="updateCookingTime(cookingTime.value)">
-          </div>
-        </div>
-      </div>
+    <div class="col-sm-12 col-md-7 mt-3">
+      <app-basic-properties [editMode]="editable"
+                            [recipeTitle]="recipe.title"
+                            [recipeDescription]="recipe.description"
+                            [recipeDifficulty]="recipe.difficulty"
+                            [defaultServings]="recipe.defaultServings"
+                            [totalCookingTimeInMinutes]="recipe.cookingTime"
+                            (recipeTitleChanged)="onTitleUpdate($event)"
+                            (recipeDescriptionChanged)="onDescriptionUpdate($event)"
+                            (recipeDifficultyChanged)="onDifficultyUpdate($event)"
+                            (recipeDefaultServingsChanged)="onDefaultServingsUpdate($event)"
+                            (recipeTotalTimeInMinutesChanged)="onTotalTimeUpdate($event)">
+      </app-basic-properties>
     </div>
   </div>
   <div class="row align-content-center">
     <div id="tags" class="mt-3 col-sm-12">
       <app-tags [recipe]="recipe"
-                       [editable]="editable"></app-tags>
+                [editable]="editable"></app-tags>
     </div>
   </div>
   <div class="row">

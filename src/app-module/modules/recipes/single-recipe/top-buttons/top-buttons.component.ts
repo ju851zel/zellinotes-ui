@@ -9,11 +9,11 @@ export class TopButtonsComponent {
 
   @Input() editMode: boolean;
 
-  @Output() navigateToRecipes = new EventEmitter<any>();
-  @Output() editableToggled = new EventEmitter<any>();
-  @Output() deleteRecipe = new EventEmitter<any>();
-  @Output() downloadRecipe = new EventEmitter<any>();
-  @Output() duplicateRecipe = new EventEmitter<any>();
+  @Output() navigateToRecipes = new EventEmitter<boolean>();
+  @Output() editableToggled = new EventEmitter<boolean>();
+  @Output() deleteRecipe = new EventEmitter<boolean>();
+  @Output() downloadRecipe = new EventEmitter<boolean>();
+  @Output() duplicateRecipe = new EventEmitter<boolean>();
 
   onNavigateToRecipes(): void {
     this.navigateToRecipes.emit(true);

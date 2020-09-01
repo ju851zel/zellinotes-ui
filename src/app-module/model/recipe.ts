@@ -77,7 +77,7 @@ export class Ingredient {
 
 export class Recipe {
   constructor(readonly id: string,
-              readonly totalTime: number,
+              readonly cookingTime: number,
               readonly created: Date,
               readonly lastModified: Date,
               readonly ingredients: Array<Ingredient>,
@@ -94,7 +94,7 @@ export class Recipe {
   copyButTitle(newTitle: string): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -111,7 +111,7 @@ export class Recipe {
   copyButDescription(newDescription: string): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -128,7 +128,7 @@ export class Recipe {
   copyButDifficulty(difficulty: Difficulty): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -145,7 +145,7 @@ export class Recipe {
   copyButDefaultServings(servings: number): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -179,7 +179,7 @@ export class Recipe {
   copyButTags(tags: Set<string>): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -198,7 +198,7 @@ export class Recipe {
     instructions.push(instruction);
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -215,7 +215,7 @@ export class Recipe {
   copyButInstructions(instructions: Array<string>): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -235,7 +235,7 @@ export class Recipe {
     console.log('new instructions', instructions);
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       this.ingredients,
@@ -252,7 +252,7 @@ export class Recipe {
   copyButIngredients(ingredients: Array<Ingredient>): Recipe {
     return new Recipe(
       this.id,
-      this.totalTime,
+      this.cookingTime,
       this.created,
       this.lastModified,
       ingredients,

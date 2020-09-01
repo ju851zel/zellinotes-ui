@@ -15,6 +15,7 @@ import {SingleIngredientComponent} from './single-recipe/ingredients/single-ingr
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.component';
+import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic-properties.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.com
     InstructionsComponent,
     IngredientsComponent,
     SingleIngredientComponent,
-    TopButtonsComponent
+    TopButtonsComponent,
+    BasicPropertiesComponent
   ],
   imports: [
     CommonModule,

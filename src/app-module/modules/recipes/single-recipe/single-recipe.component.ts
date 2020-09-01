@@ -62,16 +62,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     return this.activatedRoute.snapshot.params.recipeId;
   }
 
-  totalTimeFormatted(time: string): string {
-    const totalTime = parseInt(time, 10);
-    const hours = parseInt((totalTime / 60).toString(), 10);
-    const minutes = totalTime % 60;
-    if (hours === 0) {
-      return `${minutes} min`;
-    } else {
-      return `${hours} h ${minutes} min`;
-    }
-  }
+
 
   navigateToRecipes(): void {
     this.router.navigate(['../'], {relativeTo: this.activatedRoute});
@@ -114,24 +105,16 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     this.updateRecipe(this.recipe.copyButDescription(value));
   }
 
-  setDifficultyEasy(): void {
-    this.updateRecipe(this.recipe.copyButDifficulty(Difficulty.EASY));
+  onDifficultyUpdate(difficulty: Difficulty): void {
+    this.updateRecipe(this.recipe.copyButDifficulty(difficulty));
   }
 
-  setDifficultyHard(): void {
-    this.updateRecipe(this.recipe.copyButDifficulty(Difficulty.HARD));
-  }
-
-  setDifficultyMedium(): void {
-    this.updateRecipe(this.recipe.copyButDifficulty(Difficulty.MEDIUM));
-  }
-
-  setDefaultServings(servings: number): void {
+  onDefaultServingsUpdate(servings: number): void {
     this.updateRecipe(this.recipe.copyButDefaultServings(servings));
   }
 
-  updateCookingTime(time: string): void {
-    this.updateRecipe(this.recipe.copyButTotalTime(parseInt(time, 10)));
+  onTotalTimeUpdate(time: number): void {
+    this.updateRecipe(this.recipe.copyButTotalTime(time));
   }
 
 }
