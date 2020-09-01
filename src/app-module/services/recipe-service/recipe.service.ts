@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Recipe} from '../../model/recipe';
 
 @Injectable({
@@ -7,17 +7,30 @@ import {Recipe} from '../../model/recipe';
 })
 export class RecipeService {
   private internalRecipes: Array<Recipe> = [];
-  public recipes = new BehaviorSubject<Array<Recipe>>(this.internalRecipes);
+  public readonly recipes = new BehaviorSubject<Array<Recipe>>(this.internalRecipes);
 
-  constructor() {}
+  constructor() {
+  }
 
   addRecipe(recipe: Recipe): void {
+    console.log('Added recipe with id:' + recipe.id );
     this.internalRecipes.push(recipe);
     this.recipes.next(this.internalRecipes);
   }
 
   deleteRecipe(recipeId: string): void {
     this.internalRecipes = this.internalRecipes.filter(recipe => recipe.id !== recipeId);
+    this.update();
+  }
+
+  replaceRecipe(recipeId: string, recipe: Recipe): void {
+    console.log('Updated recipe.');
+    this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
+    this.internalRecipes.push(recipe);
+    this.update();
+  }
+
+  update(): void {
     this.recipes.next(this.internalRecipes);
   }
 }
