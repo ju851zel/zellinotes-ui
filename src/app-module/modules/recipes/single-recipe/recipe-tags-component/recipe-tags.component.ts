@@ -12,6 +12,9 @@ export class RecipeTagsComponent implements OnInit {
   @Input()
   public recipe: Recipe;
 
+  @Input()
+  public editable: boolean;
+
   constructor(private recipeService: RecipeService) {
   }
 

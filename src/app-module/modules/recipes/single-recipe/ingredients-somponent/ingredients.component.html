@@ -1,6 +1,6 @@
 <div class="border rounded border-grey p-2">
   <div class="row align-items-center" (click)="toggleCollapse()">
-    <div class="col">
+    <div *ngIf="editable" class="col">
       <button class="btn btn-primary " (click)="addIngredient($event)">
         <bi name="Plus-Circle"></bi>
       </button>
@@ -26,12 +26,12 @@
       <div class="list-group list-group-flush">
         <div *ngFor="let ingredient of ingredients; let index = index; trackBy:trackByIngredients"
              class="list-group-item">
-          <app-single-ingredient [defaultIngredient]="ingredients[index]"
+          <app-single-ingredient *ngIf="editable"
+                                 [defaultIngredient]="ingredients[index]"
                                  (ingredientChanged)="singleIngredientUpdated(index, $event)"
-                                 (deleteIngredient)="deleteIngredient(index)">
-          </app-single-ingredient>
-          <p class="m-0">
-            <!--{{ ingredient.amount }} {{ ingredient.type }} {{ ingredient.article }}-->
+                                 (deleteIngredient)="deleteIngredient(index)"></app-single-ingredient>
+          <p *ngIf="!editable" class="m-0 text-center" >
+            {{ ingredient.amount }} {{ ingredient.measurementUnit.abbreviation }} {{ ingredient.title }}
           </p>
         </div>
       </div>

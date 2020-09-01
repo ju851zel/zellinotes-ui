@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Ingredient} from '../../../../model/recipe';
+import {Ingredient, MeasurementUnit} from '../../../../model/recipe';
 
 @Component({
   selector: 'app-ingredients',
@@ -10,6 +10,9 @@ export class IngredientsComponent implements OnInit {
 
   @Input()
   private defaultIngredients: Array<Ingredient>;
+
+  @Input()
+  editable: boolean;
 
   @Output()
   ingredientsChanged = new EventEmitter<Array<Ingredient>>();
@@ -27,7 +30,7 @@ export class IngredientsComponent implements OnInit {
 
   addIngredient(event: Event): void {
     event.stopPropagation();
-    this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
+    this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, MeasurementUnit.KILOGRAMM));
     this.ingredientsUpdated();
     this.showCollapse();
   }

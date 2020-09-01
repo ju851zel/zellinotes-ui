@@ -3,8 +3,8 @@ export class Difficulty {
   public static MEDIUM = new Difficulty(1, 'Medium');
   public static HARD = new Difficulty(2, 'Hard');
 
-  private constructor(private level: number,
-                      private description: string) {
+  private constructor(readonly level: number,
+                      readonly description: string) {
   }
 
   isEasyDifficulty(): boolean {

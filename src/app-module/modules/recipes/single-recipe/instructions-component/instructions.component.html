@@ -1,6 +1,6 @@
 <div class="border rounded border-grey p-2">
   <div class="row align-items-center" (click)="toggleCollapse()">
-    <div class="col">
+    <div *ngIf="editable" class="col">
       <button class="btn btn-primary" (click)="addInstruction($event)">
         <bi name="Plus-Circle"></bi>
       </button>
@@ -26,11 +26,12 @@
       <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
           class="list-group-item d-flex">
         <h3 class="mr-3 mt-1">{{ index + 1 }}.</h3>
-        <textarea class="form-control" placeholder="Boil water."
+        <textarea *ngIf="editable" class="form-control w-75" placeholder="Boil water."
                   [(ngModel)]="instructions[index]"
                   (ngModelChange)="instructionsUpdated()">
         </textarea>
-        <div class="col-sm-2 text-center pr-0">
+        <p *ngIf="!editable">{{ instructions[index] }}</p>
+        <div *ngIf="editable" class="col-sm-2 text-center pr-0">
           <button class="btn btn-primary" (click)="deleteInstruction(index)">
             <bi name="Trash"></bi>
           </button>

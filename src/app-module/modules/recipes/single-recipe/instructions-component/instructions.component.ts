@@ -9,6 +9,8 @@ export class InstructionsComponent implements OnInit {
 
   @Input()
   private defaultInstructions: Array<string>;
+  @Input()
+  editable: boolean;
 
   @Output()
   instructionChanged = new EventEmitter<Array<string>>();
@@ -24,7 +26,7 @@ export class InstructionsComponent implements OnInit {
     return index;
   }
 
-  addInstruction(event:Event): void {
+  addInstruction(event: Event): void {
     event.stopPropagation();
     this.instructions.push('');
     this.instructionsUpdated();
