@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-instructions',
@@ -8,9 +9,9 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 export class InstructionsComponent implements OnInit, OnChanges {
 
   @Input()
-  private defaultInstructions: Array<string>;
+  defaultInstructions: Array<string>;
   @Input()
-  private editable: boolean;
+  editMode: boolean;
 
   @Output()
   instructionChanged = new EventEmitter<Array<string>>();
@@ -19,23 +20,40 @@ export class InstructionsComponent implements OnInit, OnChanges {
   collapsed = false;
 
   ngOnInit(): void {
-    this.instructions = Object.assign([], this.defaultInstructions);
+    this.instructions = cloneDeep(this.defaultInstructions);
+    this.addEmptyInstructionWhenNecessary();
   }
 
-  editMode(): boolean {
-    return this.editable;
+  ngOnChanges(changes: SimpleChanges): void {
+    this.addEmptyInstructionWhenNecessary();
+  }
+
+  private addEmptyInstructionWhenNecessary(): void {
+    if (!this.instructionsAreSet()) {
+      return;
+    }
+
+    if (this.editMode) {
+      if (this.noInstructions() || (this.minOneInstruction() && this.lastInstructionNotEmpty())) {
+        this.instructions.push('');
+      }
+    } else {
+      if (this.minOneInstruction() && this.lastInstructionIsEmpty()) {
+        this.instructions.pop();
+      }
+    }
+  }
+
+  private instructionsAreSet(): boolean {
+    return !!this.instructions;
   }
 
   viewMode(): boolean {
-    return !this.editMode();
+    return !this.editMode;
   }
 
   trackByInstructions(index: number, item: any): number {
     return index;
-  }
-
-  private lastInstructionNotEmpty(): boolean {
-    return this.instructions?.length === 0 || this.instructions[this.instructions.length - 1].length !== 0;
   }
 
   deleteInstruction(index: number): void {
@@ -52,17 +70,12 @@ export class InstructionsComponent implements OnInit, OnChanges {
     this.instructionChanged.emit(finalInstructions);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.editMode() && this.lastInstructionNotEmpty()) {
-      this.instructions.push('');
-    } else if (this.viewMode() && this.lastInstructionIsEmpty()) {
-      this.instructions.pop();
-    }
+  private lastInstructionNotEmpty(): boolean {
+    return this.instructions[this.instructions.length - 1].length !== 0;
   }
 
-
   private lastInstructionIsEmpty(): boolean {
-    return !!this.instructions && this.instructions[this.instructions.length - 1].length === 0;
+    return this.instructions[this.instructions.length - 1].length === 0;
   }
 
   noInstructions(): boolean {
@@ -71,5 +84,10 @@ export class InstructionsComponent implements OnInit, OnChanges {
 
   minOneInstruction(): boolean {
     return this.instructions.length > 0;
+  }
+
+  updateInstruction(instruction: string, index: number): void {
+    this.instructions[index] = instruction;
+    this.notifyInstructionsUpdated();
   }
 }

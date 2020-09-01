@@ -1,10 +1,10 @@
 <div class="border rounded border-grey p-2">
   <div class="row align-items-center"
        (click)="toggleCollapse()">
-    <div class="col text-center">
-      <h4 class="form-label d-inline">Instructions</h4>
+    <div class="col-6">
+      <h4 class="form-label my-auto ml-2">Instructions</h4>
     </div>
-    <div class="col text-right">
+    <div class="col-6 text-right">
       <button class="btn" type="button">
         <bi *ngIf="collapsed" name="Chevron-Up"></bi>
         <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
@@ -25,15 +25,15 @@
         <h3 class="mr-3 mt-1">
           {{ index + 1 }}.
         </h3>
-        <textarea *ngIf="editMode()"
+        <textarea *ngIf="editMode"
                   class="form-control w-75"
                   placeholder="Type your instructions. E.g. Boil water ..."
-                  [(ngModel)]="instructions[index]"
-                  (ngModelChange)="notifyInstructionsUpdated()"></textarea>
+                  [ngModel]="instructions[index]"
+                  (ngModelChange)="updateInstruction($event, index)"></textarea>
         <p *ngIf="viewMode()">
           {{ instructions[index] }}
         </p>
-        <div *ngIf="editMode()"
+        <div *ngIf="editMode"
              class="col-sm-2 text-center pr-0">
           <button *ngIf="instructions.length != 1 && index != instructions.length - 1" class="btn btn-primary"
                   (click)="deleteInstruction(index)">

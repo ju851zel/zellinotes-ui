@@ -37,9 +37,9 @@
   </div>
   <div class="row">
     <div class="col-md-6 col-lg-8 mt-2 pr-md-1">
-      <app-instructions [defaultInstructions]="recipe.instructions"
-                        (instructionChanged)="instructionsUpdated($event)"
-                        [editable]="editable">
+      <app-instructions [editMode]="editable"
+                        [defaultInstructions]="recipe.instructions"
+                        (instructionChanged)="instructionsUpdated($event)">
       </app-instructions>
     </div>
     <div class="col-md-6 col-lg-4 mt-2 pl-md-1">
