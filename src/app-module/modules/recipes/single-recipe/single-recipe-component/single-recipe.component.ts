@@ -63,9 +63,9 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
 
   totalTimeFormatted(time: string): string {
     const totalTime = parseInt(time, 10);
-    const hours = (totalTime / 60).toFixed(0);
+    const hours = parseInt((totalTime / 60).toString(), 10);
     const minutes = totalTime % 60;
-    if (hours === '0') {
+    if (hours === 0) {
       return `${minutes} min`;
     } else {
       return `${hours} h ${minutes} min`;
