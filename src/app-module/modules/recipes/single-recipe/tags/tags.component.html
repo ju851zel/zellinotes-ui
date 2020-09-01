@@ -1,17 +1,16 @@
 <div class="border rounded border-grey p-2 my-auto">
   <ul class="list-inline my-0">
-    <li *ngFor="let tag of recipe.tags" class="list-inline-item my-1">
+    <li *ngFor="let tag of recipeTags" class="list-inline-item my-1">
       <button class="btn btn-primary btn-sm">
         {{ tag }}
       </button>
     </li>
   </ul>
-  <div *ngIf="editable">
+  <div *ngIf="editMode">
     <input type="text" class="form-control"
            id="tag-input"
            placeholder="vegan"
-           #tagInput
-           [value]="createTagInputValue()"
-           (input)="onTagUpdate(tagInput.value)">
+           [ngModel]="createTagInputValue()"
+           (ngModelChange)="onTagUpdate($event)">
   </div>
 </div>

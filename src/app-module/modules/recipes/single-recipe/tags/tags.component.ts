@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {RecipeService} from '../../../../services/recipe-service/recipe.service';
-import {Recipe} from '../../../../model/recipe';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-tags',
@@ -9,29 +8,32 @@ import {Recipe} from '../../../../model/recipe';
 })
 export class TagsComponent implements OnInit {
 
-  @Input()
-  public recipe: Recipe;
+  @Input() editMode: boolean;
+  @Input() defaultRecipeTags: Set<string>;
 
-  @Input()
-  public editable: boolean;
-
-  constructor(private recipeService: RecipeService) {
+  get recipeTags(): Array<string> {
+    return this.$recipeTags;
   }
 
+  set recipeTags(value: Array<string>) {
+    this.$recipeTags = cloneDeep(value);
+    this.recipeTagsChanged.emit(this.$recipeTags);
+  }
+
+  private $recipeTags: Array<string>;
+
+  @Output()
+  recipeTagsChanged = new EventEmitter<Array<string>>();
+
   ngOnInit(): void {
-    console.log(this.recipe);
+    this.recipeTags = cloneDeep(this.defaultRecipeTags);
   }
 
   createTagInputValue(): string {
-    return [...this.recipe.tags].join(' ');
+    return [...this.recipeTags].join(' ');
   }
 
   onTagUpdate(value: string): void {
-    const tags = value.split(' ').filter(tag => tag !== '');
-    this.updateRecipe(this.recipe.copyButTags(new Set(tags)));
-  }
-
-  updateRecipe(recipe: Recipe): void {
-    this.recipeService.replaceRecipe(this.recipe.id, recipe);
+    this.recipeTags = value.split(' ').filter(tag => tag !== '');
   }
 }

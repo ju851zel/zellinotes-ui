@@ -29,8 +29,10 @@
   </div>
   <div class="row align-content-center">
     <div id="tags" class="mt-3 col-sm-12">
-      <app-tags [recipe]="recipe"
-                [editable]="editable"></app-tags>
+      <app-tags [editMode]="editable"
+                [defaultRecipeTags]="recipe.tags"
+                (recipeTagsChanged)="onRecipeTagsChanged($event)"
+      ></app-tags>
     </div>
   </div>
   <div class="row">

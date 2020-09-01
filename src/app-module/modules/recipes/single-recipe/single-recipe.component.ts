@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Difficulty, Ingredient, Recipe} from '../../../model/recipe';
 import {RecipeService} from '../../../services/recipe-service/recipe.service';
 import {Subscription} from 'rxjs';
-import * as cloneDeep from 'lodash/cloneDeep';
+
 
 @Component({
   selector: 'app-single-recipe',
@@ -63,7 +63,6 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
 
-
   navigateToRecipes(): void {
     this.router.navigate(['../'], {relativeTo: this.activatedRoute});
   }
@@ -117,4 +116,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     this.updateRecipe(this.recipe.copyButTotalTime(time));
   }
 
+  onRecipeTagsChanged(tags: Array<string>): void {
+    this.updateRecipe(this.recipe.copyButTags(new Set(tags)));
+  }
 }
