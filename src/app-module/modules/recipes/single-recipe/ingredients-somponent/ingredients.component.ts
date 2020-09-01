@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Ingredient} from '../../../../model/recipe';
 
 @Component({
   selector: 'app-ingredients',
@@ -6,11 +7,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ingredients.component.css']
 })
 export class IngredientsComponent implements OnInit {
-  ingredient: any;
 
-  constructor() { }
+  @Input()
+  private defaultIngredients: Array<Ingredient>;
+
+  @Output()
+  ingredientsChanged = new EventEmitter<Array<Ingredient>>();
+
+  ingredients: Array<Ingredient>;
+  collapsed = false;
 
   ngOnInit(): void {
+    this.ingredients = Object.assign([], this.defaultIngredients);
   }
 
+  trackByIngredients(index: number, item: Ingredient): number {
+    return item.id;
+  }
+
+  addIngredient(): void {
+    this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
+    this.ingredientsUpdated();
+    this.showCollapse();
+  }
+
+  showCollapse(): void {
+    this.collapsed = false;
+  }
+
+  singleIngredientUpdated(index: number, ingredient: Ingredient): void {
+    this.ingredients[index] = ingredient;
+    this.ingredientsUpdated();
+  }
+
+  ingredientsUpdated(): void {
+    this.ingredientsChanged.emit(this.ingredients);
+  }
+
+  deleteIngredient(index: number): void {
+    this.ingredients.splice(index, 1);
+    this.ingredientsUpdated();
+  }
 }

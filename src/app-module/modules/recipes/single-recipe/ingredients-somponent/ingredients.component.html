@@ -1,29 +1,31 @@
 <div class="border rounded border-grey p-2">
   <div>
-    <h4 class="form-label d-inline">Ingredients</h4>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary mr-4" (click)="addIngredient()">
       <bi name="Plus-Circle"></bi>
     </button>
-    <button class="btn btn-primary float-right" type="button" data-toggle="collapse"
-            data-target="#collapsingIngredients">
-      <bi name="Chevron-Up"></bi>
+    <h4 class="form-label d-inline my-auto">Ingredients</h4>
+    <button class="btn float-right" type="button" (click)="collapsed = !collapsed">
+      <bi *ngIf="collapsed" name="Chevron-Up"></bi>
+      <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
     </button>
-    <div class="row">
-      <div class="col">
-        <div>
-          No Ingredients yet
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div class="collapse" id="collapsingIngredients">
-    <div>
+  <div id="collapsingInstructions" [ngbCollapse]="collapsed">
+    <div *ngIf="ingredients.length === 0" class="row">
+      <h5 class="text-secondary col-sm-12 text-center m-2">
+        No Ingredients yet
+      </h5>
+    </div>
+    <div *ngIf="ingredients.length !== 0">
       <div class="list-group list-group-flush">
-        <div class="list-group-item">
-          <app-single-ingredient></app-single-ingredient>
+        <div *ngFor="let ingredient of ingredients; let index = index; trackBy:trackByIngredients"
+             class="list-group-item">
+          <app-single-ingredient [defaultIngredient]="ingredients[index]"
+                                 (ingredientChanged)="singleIngredientUpdated(index, $event)"
+                                 (deleteIngredient)="deleteIngredient(index)">
+          </app-single-ingredient>
           <p class="m-0">
-            {{ ingredient.amount }} {{ ingredient.type }} {{ ingredient.article }}
+            <!--{{ ingredient.amount }} {{ ingredient.type }} {{ ingredient.article }}-->
           </p>
         </div>
       </div>
