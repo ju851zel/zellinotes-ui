@@ -1,26 +1,29 @@
 <div>
   <div class="row">
     <div class="col-sm-6 pl-0 pr-1">
-      <form>
-        <input class="form-control" placeholder="200"/>
-      </form>
+      <input class="form-control"
+             type="number"
+             placeholder="200"
+             [(ngModel)]="ingredient.amount"
+             (ngModelChange)="ingredientUpdated()"/>
     </div>
     <div class="col-sm-6 pl-1 pr-0">
-      <select class="form-select">
-        <option value="1"> One</option>
-        <option value="1"> One</option>
-        <option value="1"> One</option>
+      <select class="form-select"
+              [(ngModel)]="ingredient.unit"
+              (ngModelChange)="ingredientUpdated()">
+        <option *ngFor="let unit of allMeasurementUnits" [value]="unit.title">{{ unit.title }}</option>
       </select>
     </div>
   </div>
   <div class="row mt-1">
     <div class="col-sm-9 pl-0 pr-1">
-      <form action="submit">
-        <input class="form-control" placeholder="Cheese"/>
-      </form>
+      <input class="form-control"
+             placeholder="Cheese"
+             [(ngModel)]="ingredient.title"
+             (ngModelChange)="ingredientUpdated()"/>
     </div>
-    <div class="col-sm-3 text-center p-0">
-      <button class="btn btn-primary">
+    <div class="col-sm-3 pl-1 pr-0 text-center">
+      <button class="btn btn-primary" (click)="onDeleteIngredientClicked()">
         <bi name="Trash"></bi>
       </button>
     </div>
