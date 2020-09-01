@@ -1,37 +1,33 @@
 <div class="border rounded border-grey p-2">
-  <div class="row align-items-center" (click)="toggleCollapse()">
-    <div *ngIf="editable" class="col">
-      <button class="btn btn-primary " (click)="addIngredient($event)">
-        <bi name="Plus-Circle"></bi>
-      </button>
-    </div>
+  <div class="row align-items-center"
+       (click)="toggleCollapse()">
     <div class="col text-center">
       <h4 class="form-label">Ingredients</h4>
     </div>
     <div class="col text-right">
-      <button class="btn float-right" type="button">
+      <button class="btn" type="button">
         <bi *ngIf="collapsed" name="Chevron-Up"></bi>
         <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
       </button>
     </div>
   </div>
 
-  <div id="collapsingInstructions" [ngbCollapse]="collapsed">
-    <div *ngIf="ingredients.length === 0" class="row">
+  <div id="collapsingIngredients" [ngbCollapse]="collapsed">
+    <div *ngIf="viewMode() && noIngredients()" class="row">
       <h5 class="text-secondary col-sm-12 text-center m-2">
         No Ingredients yet
       </h5>
     </div>
-    <div *ngIf="ingredients.length !== 0">
+    <div *ngIf="minOneIngredient()">
       <div class="list-group list-group-flush">
         <div *ngFor="let ingredient of ingredients; let index = index; trackBy:trackByIngredients"
              class="list-group-item">
-          <app-single-ingredient *ngIf="editable"
+          <app-single-ingredient *ngIf="editMode()"
                                  [defaultIngredient]="ingredients[index]"
                                  (ingredientChanged)="singleIngredientUpdated(index, $event)"
                                  (deleteIngredient)="deleteIngredient(index)"></app-single-ingredient>
-          <p *ngIf="!editable" class="m-0 text-center" >
-            {{ ingredient.amount }} {{ ingredient.measurementUnit.abbreviation }} {{ ingredient.title }}
+          <p *ngIf="viewMode()" class="m-0 text-center">
+            {{ ingredient.amount }} {{ ingredient.measurementUnit?.abbreviation }} {{ ingredient.title }}
           </p>
         </div>
       </div>

@@ -1,18 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Ingredient, MeasurementUnit} from '../../../../model/recipe';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Ingredient} from '../../../../model/recipe';
 
 @Component({
   selector: 'app-ingredients',
   templateUrl: './ingredients.component.html',
   styleUrls: ['./ingredients.component.css']
 })
-export class IngredientsComponent implements OnInit {
+export class IngredientsComponent implements OnInit, OnChanges {
 
   @Input()
   private defaultIngredients: Array<Ingredient>;
-
   @Input()
-  editable: boolean;
+  private editable: boolean;
 
   @Output()
   ingredientsChanged = new EventEmitter<Array<Ingredient>>();
@@ -28,32 +27,60 @@ export class IngredientsComponent implements OnInit {
     return item.id;
   }
 
-  addIngredient(event: Event): void {
-    event.stopPropagation();
-    this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, MeasurementUnit.KILOGRAMM));
-    this.ingredientsUpdated();
-    this.showCollapse();
+  editMode(): boolean {
+    return this.editable;
   }
 
-  showCollapse(): void {
-    this.collapsed = false;
+  viewMode(): boolean {
+    return !this.editMode();
   }
 
   singleIngredientUpdated(index: number, ingredient: Ingredient): void {
     this.ingredients[index] = ingredient;
-    this.ingredientsUpdated();
+    this.notifyIngredientsUpdated();
   }
 
-  ingredientsUpdated(): void {
-    this.ingredientsChanged.emit(this.ingredients);
+  notifyIngredientsUpdated(): void {
+    this.ingredientsChanged.emit(Array.from(this.ingredients));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.defaultIngredients) {
+      this.ingredients = changes.defaultIngredients.currentValue;
+      console.log(this.ingredients);
+    } else {
+      return;
+    }
+
+    if (this.editMode() && this.lastIngredientNotEmpty()) {
+      this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
+    } else if (this.viewMode() && this.lastIngredientIsEmpty()) {
+      this.ingredients.pop();
+    }
   }
 
   deleteIngredient(index: number): void {
     this.ingredients.splice(index, 1);
-    this.ingredientsUpdated();
+    this.notifyIngredientsUpdated();
   }
 
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
+  }
+
+  noIngredients(): boolean {
+    return this.ingredients.length === 0;
+  }
+
+  minOneIngredient(): boolean {
+    return this.ingredients.length > 0;
+  }
+
+  private lastIngredientNotEmpty(): boolean {
+    return this.ingredients?.length === 0 || this.ingredients[this.ingredients.length - 1].partlyDefined();
+  }
+
+  private lastIngredientIsEmpty(): boolean {
+    return this.ingredients?.length > 0 && this.ingredients[this.ingredients.length - 1].notDefined();
   }
 }
