@@ -25,21 +25,39 @@ export class MeasurementUnit {
   public static GRAMM = new MeasurementUnit('gr', 'gramm');
   public static MILLILITER = new MeasurementUnit('ml', 'milliliter');
   public static LITER = new MeasurementUnit('l', 'liter');
-  public static PIECE = new MeasurementUnit('pc', 'liter');
+  public static PIECE = new MeasurementUnit('pc', 'piece');
   public static PACK = new MeasurementUnit('pk', 'pack');
 
-  private constructor(private abbreviation: string,
-                      private title: string) {
+  public static allUnits = [
+    MeasurementUnit.KILOGRAMM,
+    MeasurementUnit.GRAMM,
+    MeasurementUnit.MILLILITER,
+    MeasurementUnit.LITER,
+    MeasurementUnit.PIECE,
+    MeasurementUnit.PACK
+  ];
+
+  private constructor(readonly abbreviation: string,
+                      readonly title: string) {
   }
 
 }
 
 
 export class Ingredient {
-  constructor(readonly id: string,
+  constructor(readonly id: number,
               readonly amount: number,
               readonly title: string,
               readonly measurementUnit: MeasurementUnit) {
+  }
+
+  copy(): Ingredient {
+    return new Ingredient(
+      this.id,
+      this.amount,
+      this.title,
+      this.measurementUnit
+    );
   }
 }
 
@@ -214,6 +232,23 @@ export class Recipe {
       this.tags,
       this.image,
       instructions,
+      this.defaultServings);
+  }
+
+  copyButIngredients(ingredients: Array<Ingredient>): Recipe {
+    return new Recipe(
+      this.id,
+      this.totalTime,
+      this.created,
+      this.lastModified,
+      ingredients,
+      this.version,
+      this.difficulty,
+      this.description,
+      this.title,
+      this.tags,
+      this.image,
+      this.instructions,
       this.defaultServings);
   }
 }
