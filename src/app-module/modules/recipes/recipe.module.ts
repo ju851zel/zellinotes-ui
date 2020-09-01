@@ -12,6 +12,8 @@ import {RecipeTagsComponent} from './single-recipe/recipe-tags-component/recipe-
 import {InstructionsComponent} from './single-recipe/instructions-component/instructions.component';
 import {IngredientsComponent} from './single-recipe/ingredients-somponent/ingredients.component';
 import {SingleIngredientComponent} from './single-recipe/single-ingredient/single-ingredient.component';
+import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import {SingleIngredientComponent} from './single-recipe/single-ingredient/singl
     IconsModule,
     NgxMasonryModule,
     BrowserAnimationsModule,
+    FormsModule,
+    NgbModule,
   ]
 })
 export class RecipeModule {

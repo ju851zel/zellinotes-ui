@@ -8,7 +8,7 @@ import {
   ArrowsMove,
   ArrowUp,
   Bookmark,
-  Bullseye,
+  Bullseye, ChevronDown,
   ChevronUp,
   CloudDownload,
   CloudUpload,
@@ -41,6 +41,7 @@ const icons = {
   ArrowsMove,
   EggFried,
   ChevronUp,
+  ChevronDown,
   PlusCircle
 };
 
