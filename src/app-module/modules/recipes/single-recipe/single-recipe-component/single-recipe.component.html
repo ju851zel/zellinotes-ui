@@ -1,37 +1,13 @@
 <div class="container">
-  <div id="top-buttons" class="row">
-    <div class="col">
-      <button class="mx-1 btn btn-primary"
-              title="Go Back to all recipes"
-              (click)="navigateToRecipes()">
-        <bi name="Arrow-Left"></bi>
-      </button>
-      <button class="mx-1 btn btn-primary"
-              title="Edit recipe"
-              (click)="toggleEditable()">
-        <bi [name]="editable ? 'Unlock' : 'Lock'"></bi>
-      </button>
-      <button class="mx-1 btn btn-primary"
-              title="Delete recipe"
-              (click)="deleteRecipe()">
-        <bi name="Trash"></bi>
-      </button>
-      <button class="mx-1 btn btn-primary"
-              title="Export(download) recipe"
-              (click)="downloadRecipe()">
-        <bi name="Download"></bi>
-      </button>
-      <button class="mx-1 btn btn-primary"
-              title="Duplicate"
-              (click)="duplicate()">
-        <bi name="Files"></bi>
-      </button>
-    </div>
-  </div>
-  <div *ngIf="loadingRecipe" class="row align-content-center">
-    <h3>Loading ...</h3>
-    <!--    todo-->
-  </div>
+
+  <app-top-buttons [editMode]="editable"
+                   (navigateToRecipes)="navigateToRecipes()"
+                   (editableToggled)="toggleEditable()"
+                   (deleteRecipe)="deleteRecipe()"
+                   (downloadRecipe)="downloadRecipe()"
+                   (duplicateRecipe)="duplicate()">
+  </app-top-buttons>
+
   <div id="content" class="row align-content-center">
     <div id="image-left" class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
       <app-recipe-upload-crop-image [recipeId]="recipe.id"></app-recipe-upload-crop-image>
