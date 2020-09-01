@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-instructions',
@@ -24,7 +24,8 @@ export class InstructionsComponent implements OnInit {
     return index;
   }
 
-  addInstruction(): void {
+  addInstruction(event:Event): void {
+    event.stopPropagation();
     this.instructions.push('');
     this.instructionsUpdated();
     this.showCollapse();
@@ -43,4 +44,7 @@ export class InstructionsComponent implements OnInit {
     this.instructionsUpdated();
   }
 
+  toggleCollapse(): void {
+    this.collapsed = !this.collapsed;
+  }
 }

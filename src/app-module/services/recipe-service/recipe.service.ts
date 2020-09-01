@@ -13,7 +13,7 @@ export class RecipeService {
   }
 
   addRecipe(recipe: Recipe): void {
-    console.log('Added recipe with id:' + recipe.id );
+    console.log('Added recipe with id:' + recipe.id);
     this.internalRecipes.push(recipe);
     this.recipes.next(this.internalRecipes);
   }
@@ -24,7 +24,7 @@ export class RecipeService {
   }
 
   replaceRecipe(recipeId: string, recipe: Recipe): void {
-    console.log('Updated recipe.');
+    console.log('Updated recipe: ', recipe);
     this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
     this.internalRecipes.push(recipe);
     this.update();

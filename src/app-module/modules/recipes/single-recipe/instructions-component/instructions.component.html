@@ -1,13 +1,19 @@
 <div class="border rounded border-grey p-2">
-  <div>
-    <button class="btn btn-primary mr-4" (click)="addInstruction()">
-      <bi name="Plus-Circle"></bi>
-    </button>
-    <h4 class="form-label d-inline my-auto">Instructions</h4>
-    <button class="btn float-right" type="button" (click)="collapsed = !collapsed">
-      <bi *ngIf="collapsed" name="Chevron-Up"></bi>
-      <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
-    </button>
+  <div class="row align-items-center" (click)="toggleCollapse()">
+    <div class="col">
+      <button class="btn btn-primary" (click)="addInstruction($event)">
+        <bi name="Plus-Circle"></bi>
+      </button>
+    </div>
+    <div class="col text-center">
+      <h4 class="form-label d-inline">Instructions</h4>
+    </div>
+    <div class="col text-right">
+      <button class="btn" type="button">
+        <bi *ngIf="collapsed" name="Chevron-Up"></bi>
+        <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
+      </button>
+    </div>
   </div>
 
   <div id="collapsingInstructions" [ngbCollapse]="collapsed">
