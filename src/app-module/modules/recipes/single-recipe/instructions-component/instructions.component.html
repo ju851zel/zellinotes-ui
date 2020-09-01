@@ -1,10 +1,6 @@
 <div class="border rounded border-grey p-2">
-  <div class="row align-items-center" (click)="toggleCollapse()">
-    <div *ngIf="editable" class="col">
-      <button class="btn btn-primary" (click)="addInstruction($event)">
-        <bi name="Plus-Circle"></bi>
-      </button>
-    </div>
+  <div class="row align-items-center"
+       (click)="toggleCollapse()">
     <div class="col text-center">
       <h4 class="form-label d-inline">Instructions</h4>
     </div>
@@ -17,25 +13,34 @@
   </div>
 
   <div id="collapsingInstructions" [ngbCollapse]="collapsed">
-    <div *ngIf="instructions.length == 0" class="row">
+    <div *ngIf="viewMode() && noInstructions()" class="row">
       <h5 class="text-secondary col-sm-12 text-center m-2">
         No Instructions yet
       </h5>
     </div>
-    <ul *ngIf="instructions.length !== 0" id="list-instructions" class="list-group list-group-flush instructionsGroup">
+    <ul *ngIf="minOneInstruction()"
+        id="list-instructions" class="list-group list-group-flush instructionsGroup">
       <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
           class="list-group-item d-flex">
-        <h3 class="mr-3 mt-1">{{ index + 1 }}.</h3>
-        <textarea *ngIf="editable" class="form-control w-75" placeholder="Boil water."
+        <h3 class="mr-3 mt-1">
+          {{ index + 1 }}.
+        </h3>
+        <textarea *ngIf="editMode()"
+                  class="form-control w-75"
+                  placeholder="Type your instructions. E.g. Boil water ..."
                   [(ngModel)]="instructions[index]"
-                  (ngModelChange)="instructionsUpdated()">
-        </textarea>
-        <p *ngIf="!editable">{{ instructions[index] }}</p>
-        <div *ngIf="editable" class="col-sm-2 text-center pr-0">
-          <button class="btn btn-primary" (click)="deleteInstruction(index)">
+                  (ngModelChange)="notifyInstructionsUpdated()"></textarea>
+        <p *ngIf="viewMode()">
+          {{ instructions[index] }}
+        </p>
+        <div *ngIf="editMode()"
+             class="col-sm-2 text-center pr-0">
+          <button *ngIf="instructions.length != 1 && index != instructions.length - 1" class="btn btn-primary"
+                  (click)="deleteInstruction(index)">
             <bi name="Trash"></bi>
           </button>
-          <button class="btn btn-primary" disabled>
+          <button class="btn btn-primary"
+                  disabled>
             <bi name="Arrows-Move"></bi>
           </button>
         </div>
