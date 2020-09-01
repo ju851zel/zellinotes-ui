@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Ingredient, MeasurementUnit} from '../../../../model/recipe';
+import {Ingredient, MeasurementUnit} from '../../../../../model/recipe';
 
 class MutableIngredient {
   constructor(public id: number,
