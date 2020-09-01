@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Recipe} from '../../../../model/recipe';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
-import { NgxMasonryOptions } from 'ngx-masonry';
+import {NgxMasonryOptions} from 'ngx-masonry';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -16,7 +17,10 @@ export class RecipeCardsComponent implements OnInit {
 
   recipes: Array<Recipe> = [];
 
-  constructor(private recipeService: RecipeService) { }
+  constructor(private recipeService: RecipeService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.recipeService.recipes.subscribe((recipes) => {
@@ -25,7 +29,7 @@ export class RecipeCardsComponent implements OnInit {
     this.recipes = this.recipeService.recipes.getValue();
   }
 
-  navigateToSingleRecipe(id: any) {
-
+  navigateToSingleRecipe(id: string): void {
+    this.router.navigate([`/recipes/${id}`], {relativeTo: this.activatedRoute});
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
 import {Difficulty, Recipe} from '../../../../model/recipe';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-recipe-overview',
@@ -10,18 +10,21 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class RecipeOverviewComponent implements OnInit {
 
-  constructor(private recipeService: RecipeService, private activatedRoute: ActivatedRoute) {
+  constructor(private recipeService: RecipeService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
+  recipes: any;
+
   ngOnInit(): void {
-    let recipeId = this.activatedRoute.snapshot.params.recipeId;
-    console.log(recipeId);
   }
 
   createRecipe(): void {
+    console.log('recipeservice overview', this.recipeService);
     const recipe = new Recipe(
-      '0',
-      '30',
+      this.recipeService.recipes.getValue().length.toString(),
+      30,
       new Date(),
       new Date(),
       [],
@@ -29,30 +32,24 @@ export class RecipeOverviewComponent implements OnInit {
       Difficulty.EASY,
       'test description',
       'test title',
-      new Set(),
+      new Set(['vegan', 'fast', 'test']),
       'https://img.taste.com.au/-RGbsS2h/taste/2019/05/chocolate-and-nutella-smores-cake-149475-2.jpg',
       [],
       2);
     this.recipeService.addRecipe(recipe);
   }
 
-  // tslint:disable-next-line:typedef
   fetchCurrentTabRecipes() {
     //
   }
 
 
-  // tslint:disable-next-line:typedef
   downloadRecipes() {
     //
   }
 
-  // tslint:disable-next-line:typedef
-  recipes: any;
-
-  navigateToSingleRecipe(id: any) {
-
-
+  navigateToSingleRecipe(id: string): void {
+    this.router.navigate([`/${id}`], {relativeTo: this.activatedRoute});
   }
 }
 
