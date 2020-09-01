@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-instructions',
   templateUrl: './instructions.component.html',
   styleUrls: ['./instructions.component.css']
 })
-export class InstructionsComponent implements OnInit, OnChanges {
-
+export class InstructionsComponent implements OnInit {
 
   @Input()
   private defaultInstructions: Array<string>;
@@ -15,13 +14,10 @@ export class InstructionsComponent implements OnInit, OnChanges {
   instructionChanged = new EventEmitter<Array<string>>();
 
   instructions: Array<string>;
+  collapsed = false;
 
   ngOnInit(): void {
     this.instructions = Object.assign([], this.defaultInstructions);
-  }
-
-  ngOnChanges(changes: any): void {
-    console.log(changes);
   }
 
   trackByInstructions(index: number, item: any): number {
@@ -30,7 +26,12 @@ export class InstructionsComponent implements OnInit, OnChanges {
 
   addInstruction(): void {
     this.instructions.push('');
-    this.instructionChanged.emit(this.instructions);
+    this.instructionsUpdated();
+    this.showCollapse();
+  }
+
+  showCollapse(): void {
+    this.collapsed = false;
   }
 
   instructionsUpdated(): void {
@@ -39,8 +40,7 @@ export class InstructionsComponent implements OnInit, OnChanges {
 
   deleteInstruction(index: number): void {
     this.instructions.splice(index, 1);
-    this.instructionChanged.emit(this.instructions);
+    this.instructionsUpdated();
   }
-
 
 }

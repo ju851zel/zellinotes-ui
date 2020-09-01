@@ -1,26 +1,24 @@
 <div class="border rounded border-grey p-2">
   <div>
-    <h4 class="form-label d-inline">Instructions</h4>
-    <button class="btn btn-primary"
-            (click)="addInstruction()">
+    <button class="btn btn-primary mr-4" (click)="addInstruction()">
       <bi name="Plus-Circle"></bi>
     </button>
-    <button class="btn btn-primary float-right" type="button" data-toggle="collapse"
-            data-target="#collapsingInstructions">
-      <bi name="Chevron-Up"></bi>
+    <h4 class="form-label d-inline my-auto">Instructions</h4>
+    <button class="btn float-right" type="button" (click)="collapsed = !collapsed">
+      <bi *ngIf="collapsed" name="Chevron-Up"></bi>
+      <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
     </button>
-    <div class="row">
-      <div class="col">
-        <div>
-          No Instruction yet
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div class="collapse" id="collapsingInstructions">
-    <ul id="list-instructions" class="list-group list-group-flush instructionsGroup">
-      <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions" class="list-group-item d-flex">
+  <div id="collapsingInstructions" [ngbCollapse]="collapsed">
+    <div *ngIf="instructions.length == 0" class="row">
+      <h5 class="text-secondary col-sm-12 text-center m-2">
+        No Instructions yet
+      </h5>
+    </div>
+    <ul *ngIf="instructions.length !== 0" id="list-instructions" class="list-group list-group-flush instructionsGroup">
+      <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
+          class="list-group-item d-flex">
         <h3 class="mr-3 mt-1">{{ index + 1 }}.</h3>
         <textarea class="form-control" placeholder="Boil water."
                   [(ngModel)]="instructions[index]"
