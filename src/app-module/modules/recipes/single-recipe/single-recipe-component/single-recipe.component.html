@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col">
       <button class="mx-1 btn btn-primary"
@@ -35,7 +35,7 @@
     <div class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
       <app-recipe-upload-crop-image [recipeId]="recipe.id"></app-recipe-upload-crop-image>
     </div>
-    <div class="col-sm-12 col-md-7 mt-3 px-4">
+    <div class="col-sm-12 col-md-7 mt-3">
       <div id="title">
         <form>
           <label for="recipe-title" class="form-label my-0">
@@ -61,47 +61,50 @@
           </textarea>
         </form>
       </div>
-      <div class="row mt-4 align-content-between">
-        <div class="col-sm-6">
-          <label><h4 class="form-label">Difficulty</h4></label>
+      <div class="row mt-4">
+        <div class="col-md-6 col-sm-12">
+          <h4 class="form-label">Difficulty</h4>
           <div class="btn-group" role="group" aria-label="Difficulty selection">
             <button type="button"
                     [class.active]="recipe.difficulty.isEasyDifficulty()"
-                    class="btn btn-primary"
+                    class="btn btn-outline-primary"
                     (click)="setDifficultyEasy()">
               Easy
             </button>
             <button type="button"
                     [class.active]="recipe.difficulty.isMediumDifficulty()"
-                    class="btn btn-primary"
+                    class="btn btn-outline-primary"
                     (click)="setDifficultyMedium()">
               Medium
             </button>
             <button type="button"
                     [class.active]="recipe.difficulty.isHardDifficulty()"
-                    class="btn btn-primary"
+                    class="btn btn-outline-primary"
                     (click)="setDifficultyHard()">
               Hard
             </button>
           </div>
         </div>
-        <div class="col-sm-6">
-          <label><h4 class="form-label">Servings</h4></label>
+        <div class="col-md-6 col-sm-12 mt-sm-4 mt-md-0">
+          <h4 class="form-label">Servings</h4>
           <div class="btn-group" role="group" aria-label="Servings selection">
             <button type="button"
                     *ngFor="let number of [1,2,3,4]"
                     [class.active]="recipe.defaultServings === number"
-                    class="btn btn-primary"
+                    class="btn btn-outline-primary"
                     (click)="setDefaultServings(number)">
               {{ number }}
             </button>
           </div>
         </div>
       </div>
-      <div class="row mt-4 align-content-between">
-        <div class="col">
-          <label for="cooking-time-range" class="form-label"><h4 class="form-label">Cooking time</h4></label>
-          <h5>{{ totalTimeFormatted(cookingTime.value) }}</h5>
+      <div class="row mt-4">
+        <h4 class="form-label">Cooking time</h4></div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div>{{ totalTimeFormatted(cookingTime.value) }}</div>
+        </div>
+        <div class="col-sm-8">
           <input type="range" class="form-range" min="15" max="300" step="5"
                  id="cooking-time-range"
                  #cookingTime
@@ -111,29 +114,29 @@
       </div>
     </div>
   </div>
+  <div class="row align-content-center">
+    <div id="tags" class="mt-3 col-sm-12">
+      <app-recipe-tags [recipe]="recipe"></app-recipe-tags>
+    </div>
+  </div>
   <div class="row">
-    <div class="mt-3 col-sm-12">
-      <div id="tags">
-        <app-recipe-tags [recipe]="recipe"></app-recipe-tags>
-      </div>
+    <div class="col-md-8 mt-2">
+      <app-instructions [defaultInstructions]="recipe.instructions"
+                        (instructionChanged)="instructionsUpdated($event)">
+      </app-instructions>
     </div>
-    <div class="row">
-      <div class="col-md-8 mt-2">
-        <app-instructions [defaultInstructions]="recipe.instructions"
-                          (instructionChanged)="instructionsUpdated($event)"
-        ></app-instructions>
-      </div>
-      <div class="col-md-4 mt-2">
-        <app-ingredients></app-ingredients>
-      </div>
+    <div class="col-md-4 mt-2">
+      <app-ingredients [defaultIngredients]="recipe.ingredients"
+                       (ingredientsChanged)="ingredientsUpdated($event)">
+      </app-ingredients>
     </div>
-    <div class="row">
-      <div class="col mt-3">
-        <!--      <b-form-text size="sm" inline text-variant="secondary">-->
-        <!--        <b-icon-clock-history/>-->
-        <!--        {{ this.$moment().from(recipe.changed, true) }}-->
-        <!--      </b-form-text>-->
-      </div>
+  </div>
+  <div class="row">
+    <div class="col mt-3">
+      <!--      <b-form-text size="sm" inline text-variant="secondary">-->
+      <!--        <b-icon-clock-history/>-->
+      <!--        {{ this.$moment().from(recipe.changed, true) }}-->
+      <!--      </b-form-text>-->
     </div>
   </div>
 </div>

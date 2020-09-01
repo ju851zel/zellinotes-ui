@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Difficulty, Recipe} from '../../../../model/recipe';
+import {Difficulty, Ingredient, Recipe} from '../../../../model/recipe';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
 import {Subscription} from 'rxjs';
 
@@ -21,7 +21,26 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
               private recipeService: RecipeService) {
   }
 
+  test(): void {
+    const recipe = new Recipe(
+      this.recipeService.recipes.getValue().length.toString(),
+      30,
+      new Date(),
+      new Date(),
+      [],
+      1,
+      Difficulty.EASY,
+      'test description',
+      'test title',
+      new Set(['vegan', 'fast', 'test']),
+      'https://img.taste.com.au/-RGbsS2h/taste/2019/05/chocolate-and-nutella-smores-cake-149475-2.jpg',
+      [],
+      2);
+    this.recipeService.addRecipe(recipe);
+  }
+
   ngOnInit(): void {
+    this.test();
     const recipeId = this.getRecipeIdFromURL();
     this.recipeSubscriber = this.recipeService.recipes.subscribe(recipes => {
       const foundRecipe = recipes.find(recipe => recipe.id === recipeId);
@@ -63,6 +82,11 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
 
   instructionsUpdated(instructions: Array<string>): void {
     this.updateRecipe(this.recipe.copyButInstructions(instructions));
+  }
+
+
+  ingredientsUpdated(ingredients: Array<Ingredient>): void {
+    this.updateRecipe(this.recipe.copyButIngredients(ingredients));
   }
 
   deleteRecipe() {
@@ -108,6 +132,5 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   updateCookingTime(time: string): void {
     this.updateRecipe(this.recipe.copyButTotalTime(parseInt(time, 10)));
   }
-
 
 }
