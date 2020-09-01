@@ -25,7 +25,8 @@ export class IngredientsComponent implements OnInit {
     return item.id;
   }
 
-  addIngredient(): void {
+  addIngredient(event: Event): void {
+    event.stopPropagation();
     this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
     this.ingredientsUpdated();
     this.showCollapse();
@@ -47,5 +48,9 @@ export class IngredientsComponent implements OnInit {
   deleteIngredient(index: number): void {
     this.ingredients.splice(index, 1);
     this.ingredientsUpdated();
+  }
+
+  toggleCollapse(): void {
+    this.collapsed = !this.collapsed;
   }
 }

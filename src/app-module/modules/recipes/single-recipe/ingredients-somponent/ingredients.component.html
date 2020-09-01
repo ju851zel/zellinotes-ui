@@ -1,7 +1,7 @@
 <div class="border rounded border-grey p-2">
-  <div class="row align-items-center">
+  <div class="row align-items-center" (click)="toggleCollapse()">
     <div class="col">
-      <button class="btn btn-primary " (click)="addIngredient()">
+      <button class="btn btn-primary " (click)="addIngredient($event)">
         <bi name="Plus-Circle"></bi>
       </button>
     </div>
@@ -9,7 +9,7 @@
       <h4 class="form-label">Ingredients</h4>
     </div>
     <div class="col text-right">
-      <button class="btn float-right" type="button" (click)="collapsed = !collapsed">
+      <button class="btn float-right" type="button">
         <bi *ngIf="collapsed" name="Chevron-Up"></bi>
         <bi *ngIf="!collapsed" name="Chevron-Down"></bi>
       </button>
