@@ -3,7 +3,7 @@
     <div class="col-6 pl-0 pr-1">
       <input class="form-control"
              type="number"
-             placeholder="200"
+             placeholder="e.g. 200"
              [(ngModel)]="ingredient.amount"
              (ngModelChange)="ingredientUpdated()"/>
     </div>
@@ -18,7 +18,7 @@
   <div class="row mt-1">
     <div class="col-9 pl-0 pr-1">
       <input class="form-control"
-             placeholder="Cheese"
+             placeholder="e.g. Cheese"
              [(ngModel)]="ingredient.title"
              (ngModelChange)="ingredientUpdated()"/>
     </div>
