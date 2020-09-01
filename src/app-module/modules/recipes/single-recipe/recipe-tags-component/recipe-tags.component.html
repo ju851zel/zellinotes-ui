@@ -1,12 +1,17 @@
-<ul class="border rounded border-grey list-inline p-2">
-  <li class="list-inline-item my-1">
-    <button class="btn btn-primary btn-sm">
-      Hello
-    </button>
-  </li>
-  <li class="list-inline-item my-1">
-    <button class="btn btn-primary btn-sm">
-      Hello
-    </button>
-  </li>
-</ul>
+<div class="border rounded border-grey p-2">
+  <ul class="list-inline">
+    <li *ngFor="let tag of recipe.tags" class="list-inline-item my-1">
+      <button class="btn btn-primary btn-sm">
+        {{ tag }}
+      </button>
+    </li>
+  </ul>
+  <form>
+    <input type="text" class="form-control"
+           id="tag-input"
+           placeholder="vegan"
+           #tagInput
+           [value]="createTagInputValue()"
+           (input)="onTagUpdate(tagInput.value)">
+  </form>
+</div>
