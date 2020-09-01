@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RecipeUploadCropImageComponent } from './recipe-upload-crop-image.component';
+import { ImageComponent } from './image.component';
 
 describe('UploadImageComponent', () => {
-  let component: RecipeUploadCropImageComponent;
-  let fixture: ComponentFixture<RecipeUploadCropImageComponent>;
+  let component: ImageComponent;
+  let fixture: ComponentFixture<ImageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecipeUploadCropImageComponent ]
+      declarations: [ ImageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RecipeUploadCropImageComponent);
+    fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

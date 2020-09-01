@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Difficulty, Ingredient, Recipe} from '../../../model/recipe';
 import {RecipeService} from '../../../services/recipe-service/recipe.service';
 import {Subscription} from 'rxjs';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-single-recipe',

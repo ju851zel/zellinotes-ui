@@ -3,11 +3,11 @@ import {RecipeService} from '../../../../services/recipe-service/recipe.service'
 import {Recipe} from '../../../../model/recipe';
 
 @Component({
-  selector: 'app-recipe-tags',
-  templateUrl: './recipe-tags.component.html',
-  styleUrls: ['./recipe-tags.component.css']
+  selector: 'app-tags',
+  templateUrl: './tags.component.html',
+  styleUrls: ['./tags.component.css']
 })
-export class RecipeTagsComponent implements OnInit {
+export class TagsComponent implements OnInit {
 
   @Input()
   public recipe: Recipe;

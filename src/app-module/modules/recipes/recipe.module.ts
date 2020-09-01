@@ -7,8 +7,8 @@ import {RecipeCardsComponent} from './recipe-overview/recipe-cards-component/rec
 import {NgxMasonryModule} from 'ngx-masonry';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SingleRecipeComponent} from './single-recipe/single-recipe.component';
-import {RecipeUploadCropImageComponent} from './single-recipe/image/recipe-upload-crop-image.component';
-import {RecipeTagsComponent} from './single-recipe/tags/recipe-tags.component';
+import {ImageComponent} from './single-recipe/image/image.component';
+import {TagsComponent} from './single-recipe/tags/tags.component';
 import {InstructionsComponent} from './single-recipe/instructions/instructions.component';
 import {IngredientsComponent} from './single-recipe/ingredients/ingredients.component';
 import {SingleIngredientComponent} from './single-recipe/ingredients/single-ingredient/single-ingredient.component';
@@ -23,8 +23,8 @@ import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.com
     UploadRecipesModalComponent,
     RecipeCardsComponent,
     SingleRecipeComponent,
-    RecipeUploadCropImageComponent,
-    RecipeTagsComponent,
+    ImageComponent,
+    TagsComponent,
     InstructionsComponent,
     IngredientsComponent,
     SingleIngredientComponent,

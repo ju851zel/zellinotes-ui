@@ -10,7 +10,7 @@
 
   <div id="content" class="row align-content-center">
     <div id="image-left" class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
-      <app-recipe-upload-crop-image [recipeId]="recipe.id"></app-recipe-upload-crop-image>
+      <app-image [recipeId]="recipe.id"></app-image>
     </div>
     <div id="stuff-right" class="col-sm-12 col-md-7 mt-3">
       <div *ngIf="editable">
@@ -92,8 +92,8 @@
   </div>
   <div class="row align-content-center">
     <div id="tags" class="mt-3 col-sm-12">
-      <app-recipe-tags [recipe]="recipe"
-                       [editable]="editable"></app-recipe-tags>
+      <app-tags [recipe]="recipe"
+                       [editable]="editable"></app-tags>
     </div>
   </div>
   <div class="row">
