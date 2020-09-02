@@ -26,7 +26,7 @@
              (ngModelChange)="onTitleUpdated($event)"/>
     </div>
     <div class="col-3 pl-0 pr-0 text-center">
-      <button class="btn btn-danger" (click)="onDeleteIngredientClicked()">
+      <button *ngIf="ingredient.partlyDefined()" class="btn btn-danger" (click)="onDeleteIngredientClicked()">
         <bi name="Trash"></bi>
       </button>
     </div>
