@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Ingredient} from '../../../../model/recipe';
+import * as lastElement from 'lodash/last';
 
 @Component({
   selector: 'app-ingredients',
@@ -9,9 +10,9 @@ import {Ingredient} from '../../../../model/recipe';
 export class IngredientsComponent implements OnInit, OnChanges {
 
   @Input()
-  private defaultIngredients: Array<Ingredient>;
+  defaultIngredients: Array<Ingredient>;
   @Input()
-  private editable: boolean;
+  editMode: boolean;
 
   @Output()
   ingredientsChanged = new EventEmitter<Array<Ingredient>>();
@@ -20,43 +21,57 @@ export class IngredientsComponent implements OnInit, OnChanges {
   collapsed = false;
 
   ngOnInit(): void {
-    this.ingredients = Object.assign([], this.defaultIngredients);
+    this.ingredients = this.defaultIngredients.map(ing => ing.clone());
+    this.addEmptyIngredientWhenNecessary();
   }
 
   trackByIngredients(index: number, item: Ingredient): number {
-    return item.id;
-  }
-
-  editMode(): boolean {
-    return this.editable;
+    return index;
   }
 
   viewMode(): boolean {
-    return !this.editMode();
+    return !this.editMode;
   }
 
-  singleIngredientUpdated(index: number, ingredient: Ingredient): void {
+  onSingleIngredientChanged(index: number, ingredient: Ingredient): void {
+    console.log('---------singleIngredient changed', ingredient);
     this.ingredients[index] = ingredient;
     this.notifyIngredientsUpdated();
   }
 
   notifyIngredientsUpdated(): void {
-    this.ingredientsChanged.emit(Array.from(this.ingredients));
+    const finalIngredients = this.ingredients.filter(ing => ing.defined());
+    this.ingredientsChanged.emit(finalIngredients);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.defaultIngredients) {
-      this.ingredients = changes.defaultIngredients.currentValue;
-      console.log(this.ingredients);
-    } else {
+    if (changes.defaultIngredients && !changes.defaultIngredients.isFirstChange()) {
+      this.ingredients = changes.defaultIngredients.currentValue.map(ing => ing);
+    }
+    this.addEmptyIngredientWhenNecessary();
+  }
+
+  private addEmptyIngredientWhenNecessary(): void {
+    if (!this.ingredientsIsDefined()) {
       return;
     }
 
-    if (this.editMode() && this.lastIngredientNotEmpty()) {
-      this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
-    } else if (this.viewMode() && this.lastIngredientIsEmpty()) {
-      this.ingredients.pop();
+    if (this.editMode) {
+      if (this.ingredientsIsEmpty() || this.lastIngredientNotEmpty()) {
+        console.log('adding empty ingredient');
+        this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
+      }
+    } else {
+      if (this.lastIngredientIsEmpty()) {
+        console.log('removing last empty ingredient');
+        this.ingredients.pop();
+      }
     }
+    console.log('ingredients:', this.ingredients);
+  }
+
+  ingredientsIsDefined(): boolean {
+    return !!this.ingredients;
   }
 
   deleteIngredient(index: number): void {
@@ -68,19 +83,20 @@ export class IngredientsComponent implements OnInit, OnChanges {
     this.collapsed = !this.collapsed;
   }
 
-  noIngredients(): boolean {
+  ingredientsIsEmpty(): boolean {
     return this.ingredients.length === 0;
   }
 
-  minOneIngredient(): boolean {
+  ingredientsNotEmpty(): boolean {
     return this.ingredients.length > 0;
   }
 
   private lastIngredientNotEmpty(): boolean {
-    return this.ingredients?.length === 0 || this.ingredients[this.ingredients.length - 1].partlyDefined();
+    return lastElement(this.ingredients)?.partlyDefined();
   }
 
   private lastIngredientIsEmpty(): boolean {
-    return this.ingredients?.length > 0 && this.ingredients[this.ingredients.length - 1].notDefined();
+    return lastElement(this.ingredients)?.notDefined();
   }
+
 }

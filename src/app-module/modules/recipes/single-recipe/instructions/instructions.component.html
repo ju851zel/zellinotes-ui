@@ -13,12 +13,12 @@
   </div>
 
   <div id="collapsingInstructions" [ngbCollapse]="collapsed">
-    <div *ngIf="viewMode() && noInstructions()" class="row">
+    <div *ngIf="viewMode() && instructionsIsEmpty()" class="row">
       <h5 class="text-secondary col-sm-12 text-center m-2">
         No Instructions yet
       </h5>
     </div>
-    <ul *ngIf="minOneInstruction()"
+    <ul *ngIf="instructionsNotEmpty()"
         id="list-instructions" class="list-group list-group-flush instructionsGroup">
       <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
           class="list-group-item d-flex">

@@ -5,9 +5,10 @@
          id="recipe-title"
          class="form-control"
          placeholder="Spaghetti Carbonara"
-         [(ngModel)]="recipeTitle">
+         [ngModel]="recipe.title"
+         (ngModelChange)="onRecipeTitleChange($event)">
 </div>
-<h2 *ngIf="!editMode">{{ recipeTitle }}</h2>
+<h2 *ngIf="!editMode">{{ recipe.title }}</h2>
 
 <!--recipe-description-->
 <div *ngIf="editMode" class="mt-4">
@@ -15,32 +16,33 @@
   <textarea class="form-control"
             id="recipe-description-editMode"
             placeholder="A famous italian recipe."
-            [(ngModel)]="recipeDescription">
+            [ngModel]="recipe.description"
+            (ngModelChange)="onRecipeDescriptionChanged($event)">
     </textarea>
 </div>
-<h4 *ngIf="!editMode"> {{ recipeDescription }}</h4>
+<h4 *ngIf="!editMode"> {{ recipe.description }}</h4>
 
 <div class="row mt-4 justify-content-around">
   <div class="col-md-auto col-sm-12 text-center">
     <!--recipe-difficulty-->
     <bi ngbTooltip="Difficulty" class="text-warning width-50px" name="bullseye"></bi>
-    <p *ngIf="!editMode" class="form-label">{{ recipeDifficulty.description }}</p>
+    <p *ngIf="!editMode" class="form-label">{{ recipe.difficulty }}</p>
     <p *ngIf="editMode" class="form-label">Difficulty</p>
     <div *ngIf="editMode" class="btn-group-sm" role="group" aria-label="Difficulty selection">
       <button type="button"
-              [class.active]="recipeDifficulty.isEasyDifficulty()"
+              [class.active]="recipe.difficulty.isEasyDifficulty()"
               class="btn btn-outline-primary"
               (click)="setDifficultyEasy()">
         Easy
       </button>
       <button type="button"
-              [class.active]="recipeDifficulty.isMediumDifficulty()"
+              [class.active]="recipe.difficulty.isMediumDifficulty()"
               class="btn btn-outline-primary"
               (click)="setDifficultyMedium()">
         Medium
       </button>
       <button type="button"
-              [class.active]="recipeDifficulty.isHardDifficulty()"
+              [class.active]="recipe.difficulty.isHardDifficulty()"
               class="btn btn-outline-primary"
               (click)="setDifficultyHard()">
         Hard
@@ -53,13 +55,13 @@
     <bi ngbTooltip="Servings" class="text-warning width-50px" name="people"></bi>
     <p *ngIf="!editMode"
        class="form-label ">
-      {{ defaultServings }} {{ defaultServings === 1 ? 'Serving' : 'Servings'}}
+      {{ recipe.defaultServings }} {{ recipe.defaultServings === 1 ? 'Serving' : 'Servings'}}
     </p>
     <p *ngIf="editMode" class="form-label ">Servings</p>
     <div *ngIf="editMode" class="btn-group-sm" role="group" aria-label="Servings selection">
       <button type="button"
               *ngFor="let number of [1,2,3,4]"
-              [class.active]="defaultServings === number"
+              [class.active]="recipe.defaultServings === number"
               class="btn btn-outline-primary"
               (click)="setDefaultServings(number)">
         {{ number }}
@@ -71,18 +73,19 @@
   <div class="col-md-auto col-sm-12 text-center mt-sm-4 mt-md-0">
     <bi ngbTooltip="Cooking time" class="text-warning width-50px" name="clock"></bi>
     <p *ngIf="!editMode" class="form-label ">
-      {{ formatTotalTimeToHourMin(totalCookingTimeInMinutes) }}
+      {{ formatCookingTimeToHourMin(recipe.cookingTimeInMinutes) }}
     </p>
     <div *ngIf="editMode">
       <p class="form-label">
-        Cooking time: {{ formatTotalTimeToHourMin(totalCookingTimeInMinutes) }}
+        Cooking time: {{ formatCookingTimeToHourMin(recipe.cookingTimeInMinutes) }}
       </p>
       <input type="range"
              class="form-range"
              min="0"
              max="300"
              step="5"
-             [(ngModel)]="totalCookingTimeInMinutes">
+             [ngModel]="recipe.cookingTimeInMinutes"
+             (ngModelChange)="onRecipeCookingTimeChanged($event)">
     </div>
   </div>
 </div>

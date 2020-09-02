@@ -1,100 +1,51 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Difficulty} from '../../../../model/recipe';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Difficulty, Recipe} from '../../../../model/recipe';
 
 @Component({
   selector: 'app-basic-properties',
   templateUrl: './basic-properties.component.html',
   styleUrls: ['./basic-properties.component.css']
 })
-export class BasicPropertiesComponent {
+export class BasicPropertiesComponent implements OnInit, OnChanges {
 
   @Input() editMode: boolean;
+  @Input() defaultRecipe: Recipe;
 
-  @Input()
-  get recipeTitle(): string {
-    return this.$recipeTitle;
+  @Output() recipeChanged = new EventEmitter<Recipe>();
+
+  recipe: Recipe;
+
+  ngOnInit(): void {
+    this.recipe = this.defaultRecipe.clone();
   }
 
-  set recipeTitle(value: string) {
-    this.$recipeTitle = value;
-    this.recipeTitleChanged.emit(value);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.recipe && !changes.recipe.isFirstChange()) {
+      this.recipe = this.defaultRecipe.clone();
+    }
   }
-
-  private $recipeTitle: string;
-
-  @Input()
-  get recipeDescription(): string {
-    return this.$recipeDescription;
-  }
-
-  set recipeDescription(value: string) {
-    this.$recipeDescription = value;
-    this.recipeDescriptionChanged.emit(value);
-  }
-
-  private $recipeDescription: string;
-
-  @Input()
-  get recipeDifficulty(): Difficulty {
-    return this.$recipeDifficulty;
-  }
-
-  set recipeDifficulty(value: Difficulty) {
-    this.$recipeDifficulty = value;
-    this.recipeDifficultyChanged.emit(value);
-  }
-
-  private $recipeDifficulty: Difficulty;
-
-  @Input()
-  get defaultServings(): number {
-    return this.$defaultServings;
-  }
-
-  set defaultServings(value: number) {
-    this.$defaultServings = value;
-    this.recipeDefaultServingsChanged.emit(value);
-  }
-
-  private $defaultServings: number;
-
-  @Input()
-  get totalCookingTimeInMinutes(): number {
-    return this.$totalCookingTimeInMinutes;
-  }
-
-  set totalCookingTimeInMinutes(value: number) {
-    this.$totalCookingTimeInMinutes = value;
-    this.recipeTotalTimeInMinutesChanged.emit(value);
-  }
-
-  private $totalCookingTimeInMinutes: number;
-
-
-  @Output() recipeTitleChanged = new EventEmitter<string>();
-  @Output() recipeDescriptionChanged = new EventEmitter<string>();
-  @Output() recipeDifficultyChanged = new EventEmitter<Difficulty>();
-  @Output() recipeDefaultServingsChanged = new EventEmitter<number>();
-  @Output() recipeTotalTimeInMinutesChanged = new EventEmitter<number>();
-
 
   setDifficultyEasy(): void {
-    this.recipeDifficulty = Difficulty.EASY;
+    this.recipe.difficulty = Difficulty.EASY;
+    this.notifyRecipeChanged();
   }
 
   setDifficultyMedium(): void {
-    this.recipeDifficulty = Difficulty.MEDIUM;
+    this.recipe.difficulty = Difficulty.MEDIUM;
+    this.notifyRecipeChanged();
   }
 
   setDifficultyHard(): void {
-    this.recipeDifficulty = Difficulty.HARD;
+    this.recipe.difficulty = Difficulty.HARD;
+    this.notifyRecipeChanged();
   }
 
   setDefaultServings(serving: number): void {
-    this.defaultServings = serving;
+    this.recipe.defaultServings = serving;
+    this.notifyRecipeChanged();
   }
 
-  formatTotalTimeToHourMin(totalTime: number): string {
+  formatCookingTimeToHourMin(totalTime: number): string {
     const hours = parseInt((totalTime / 60).toString(), 10);
     const minutes = totalTime % 60;
     if (hours === 0) {
@@ -102,6 +53,24 @@ export class BasicPropertiesComponent {
     } else {
       return `${hours} h ${minutes} min`;
     }
+  }
 
+  onRecipeTitleChange(title: string): void {
+    this.recipe.title = title;
+    this.notifyRecipeChanged();
+  }
+
+  onRecipeDescriptionChanged(description: string): void {
+    this.recipe.description = description;
+    this.notifyRecipeChanged();
+  }
+
+  onRecipeCookingTimeChanged(cookingTime: number): void {
+    this.recipe.cookingTimeInMinutes = cookingTime;
+    this.notifyRecipeChanged();
+  }
+
+  notifyRecipeChanged(): void {
+    this.recipeChanged.emit(this.recipe);
   }
 }

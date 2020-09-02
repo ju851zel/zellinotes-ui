@@ -1,29 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Ingredient, MeasurementUnit} from '../../../../../model/recipe';
-
-class MutableIngredient {
-  constructor(public id: number,
-              public amount: number,
-              public title: string,
-              public unit: string) {
-  }
-
-  toImmutable(): Ingredient {
-    return new Ingredient(
-      this.id,
-      this.amount,
-      this.title,
-      MeasurementUnit.allUnits.find(unit => unit.title === this.unit),
-    );
-  }
-}
 
 
 @Component({
   selector: 'app-single-ingredient',
   templateUrl: './single-ingredient.component.html',
 })
-export class SingleIngredientComponent implements OnInit {
+export class SingleIngredientComponent implements OnInit, OnChanges {
 
   @Input()
   defaultIngredient: Ingredient;
@@ -34,23 +17,44 @@ export class SingleIngredientComponent implements OnInit {
   @Output()
   deleteIngredient = new EventEmitter<boolean>();
 
-  ingredient: MutableIngredient;
+  ingredient: Ingredient;
   allMeasurementUnits: Array<MeasurementUnit> = MeasurementUnit.allUnits;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    const ing = this.defaultIngredient.copy();
-    this.ingredient = new MutableIngredient(ing.id, ing.amount, ing.title, ing.measurementUnit?.title);
+    this.ingredient = this.defaultIngredient.clone();
   }
 
-  ingredientUpdated(): void {
-    console.log(this.ingredient);
-    this.ingredientChanged.emit(this.ingredient.toImmutable());
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.defaultIngredient && !changes.defaultIngredient.isFirstChange()) {
+      this.ingredient = changes.defaultIngredient.currentValue.clone();
+    }
   }
 
   onDeleteIngredientClicked(): void {
     this.deleteIngredient.emit(true);
+  }
+
+  onAmountUpdated(amount: number): void {
+    this.ingredient.amount = amount;
+    this.notifyIngredientUpdated();
+  }
+
+  onMeasurementUnitUpdated(unit: MeasurementUnit): void {
+    this.ingredient.measurementUnit = unit;
+    this.notifyIngredientUpdated();
+  }
+
+  onTitleUpdated(title: string): void {
+    this.ingredient.title = title;
+    this.notifyIngredientUpdated();
+  }
+
+  notifyIngredientUpdated(): void {
+    if (this.ingredient.defined()) {
+      this.ingredientChanged.emit(this.ingredient);
+    }
   }
 }

@@ -1,8 +1,8 @@
 <div class="border rounded border-grey p-2">
   <div class="row align-items-center"
        (click)="toggleCollapse()">
-    <div class="col text-center">
-      <h4 class="form-label">Ingredients</h4>
+    <div class="col">
+      <h4 class="form-label my-auto ml-2">Ingredients</h4>
     </div>
     <div class="col text-right">
       <button class="btn" type="button">
@@ -13,21 +13,21 @@
   </div>
 
   <div id="collapsingIngredients" [ngbCollapse]="collapsed">
-    <div *ngIf="viewMode() && noIngredients()" class="row">
+    <div *ngIf="viewMode() && ingredientsIsEmpty()" class="row">
       <h5 class="text-secondary col-sm-12 text-center m-2">
         No Ingredients yet
       </h5>
     </div>
-    <div *ngIf="minOneIngredient()">
+    <div *ngIf="ingredientsNotEmpty()">
       <div class="list-group list-group-flush">
         <div *ngFor="let ingredient of ingredients; let index = index; trackBy:trackByIngredients"
              class="list-group-item">
-          <app-single-ingredient *ngIf="editMode()"
+          <app-single-ingredient *ngIf="editMode"
                                  [defaultIngredient]="ingredients[index]"
-                                 (ingredientChanged)="singleIngredientUpdated(index, $event)"
+                                 (ingredientChanged)="onSingleIngredientChanged(index, $event)"
                                  (deleteIngredient)="deleteIngredient(index)"></app-single-ingredient>
           <p *ngIf="viewMode()" class="m-0 text-center">
-            {{ ingredient.amount }} {{ ingredient.measurementUnit?.abbreviation }} {{ ingredient.title }}
+            {{ ingredient.amount }} {{ ingredient.measurementUnit.abbreviation }} {{ ingredient.title }}
           </p>
         </div>
       </div>

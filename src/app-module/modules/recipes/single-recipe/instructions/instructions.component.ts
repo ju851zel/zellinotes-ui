@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import * as cloneDeep from 'lodash/cloneDeep';
+import * as lastElement from 'lodash/last';
 
 @Component({
   selector: 'app-instructions',
@@ -20,31 +20,39 @@ export class InstructionsComponent implements OnInit, OnChanges {
   collapsed = false;
 
   ngOnInit(): void {
-    this.instructions = cloneDeep(this.defaultInstructions);
+    this.instructions = this.defaultInstructions.map(inst => inst);
     this.addEmptyInstructionWhenNecessary();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.defaultInstructions && !changes.defaultInstructions.isFirstChange()) {
+      this.instructions = changes.defaultInstructions.currentValue.map(inst => inst);
+    }
     this.addEmptyInstructionWhenNecessary();
   }
 
+  updateInstruction(instruction: string, index: number): void {
+    this.instructions[index] = instruction;
+    this.notifyInstructionsUpdated();
+  }
+
   private addEmptyInstructionWhenNecessary(): void {
-    if (!this.instructionsAreSet()) {
+    if (!this.instructionsIsDefined()) {
       return;
     }
 
     if (this.editMode) {
-      if (this.noInstructions() || (this.minOneInstruction() && this.lastInstructionNotEmpty())) {
+      if (this.instructionsIsEmpty() || this.lastInstructionNotEmpty()) {
         this.instructions.push('');
       }
     } else {
-      if (this.minOneInstruction() && this.lastInstructionIsEmpty()) {
+      if (this.lastInstructionIsEmpty()) {
         this.instructions.pop();
       }
     }
   }
 
-  private instructionsAreSet(): boolean {
+  private instructionsIsDefined(): boolean {
     return !!this.instructions;
   }
 
@@ -65,29 +73,24 @@ export class InstructionsComponent implements OnInit, OnChanges {
     this.collapsed = !this.collapsed;
   }
 
-  notifyInstructionsUpdated(): void {
-    const finalInstructions = this.instructions.filter(inst => inst.length > 0);
-    this.instructionChanged.emit(finalInstructions);
-  }
-
   private lastInstructionNotEmpty(): boolean {
-    return this.instructions[this.instructions.length - 1].length !== 0;
+    return lastElement(this.instructions)?.length > 0;
   }
 
   private lastInstructionIsEmpty(): boolean {
-    return this.instructions[this.instructions.length - 1].length === 0;
+    return lastElement(this.instructions)?.length === 0;
   }
 
-  noInstructions(): boolean {
+  instructionsIsEmpty(): boolean {
     return this.instructions.length === 0;
   }
 
-  minOneInstruction(): boolean {
+  instructionsNotEmpty(): boolean {
     return this.instructions.length > 0;
   }
 
-  updateInstruction(instruction: string, index: number): void {
-    this.instructions[index] = instruction;
-    this.notifyInstructionsUpdated();
+  notifyInstructionsUpdated(): void {
+    const finalInstructions = this.instructions.filter(inst => inst.length > 0);
+    this.instructionChanged.emit(finalInstructions);
   }
 }

@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs';
 })
 export class SingleRecipeComponent implements OnInit, OnDestroy {
   public recipe: Recipe;
-  public editable = true;
+  public editMode = true;
   public loadingRecipe = true;
 
   private recipeSubscriber: Subscription;
@@ -22,7 +22,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
               private recipeService: RecipeService) {
   }
 
-  test(): void {
+  createTestRecipe(): void {
     const recipe = new Recipe(
       this.recipeService.recipes.getValue().length.toString(),
       30,
@@ -41,13 +41,13 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.test();
+    this.createTestRecipe();
     const recipeId = this.getRecipeIdFromURL();
     this.recipeSubscriber = this.recipeService.recipes.subscribe(recipes => {
       const foundRecipe = recipes.find(recipe => recipe.id === recipeId);
       if (foundRecipe) {
         this.loadingRecipe = false;
-        this.recipe = foundRecipe;
+        this.recipe = foundRecipe.clone();
       } else {
         this.navigateToRecipes();
       }
@@ -62,61 +62,47 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     return this.activatedRoute.snapshot.params.recipeId;
   }
 
-
   navigateToRecipes(): void {
     this.router.navigate(['../'], {relativeTo: this.activatedRoute});
   }
 
   toggleEditable(): void {
-    this.editable = !this.editable;
+    this.editMode = !this.editMode;
   }
 
-  instructionsUpdated(instructions: Array<string>): void {
-    this.updateRecipe(this.recipe.copyButInstructions(instructions));
-  }
-
-
-  ingredientsUpdated(ingredients: Array<Ingredient>): void {
-    this.updateRecipe(this.recipe.copyButIngredients(ingredients));
-  }
-
-  deleteRecipe() {
+  deleteRecipe(): void {
     console.log('todo');
   }
 
-  downloadRecipe() {
+  downloadRecipe(): void {
     console.log('todo');
   }
 
-  duplicate() {
+  duplicate(): void {
     console.log('todo');
   }
 
-  updateRecipe(recipe: Recipe): void {
-    this.recipeService.replaceRecipe(this.recipe.id, recipe);
+  onInstructionsUpdated(instructions: Array<string>): void {
+    this.recipe.instructions = instructions;
+    this.updateRecipe();
   }
 
-  onTitleUpdate(value: string): void {
-    this.updateRecipe(this.recipe.copyButTitle(value));
-  }
-
-  onDescriptionUpdate(value: string): void {
-    this.updateRecipe(this.recipe.copyButDescription(value));
-  }
-
-  onDifficultyUpdate(difficulty: Difficulty): void {
-    this.updateRecipe(this.recipe.copyButDifficulty(difficulty));
-  }
-
-  onDefaultServingsUpdate(servings: number): void {
-    this.updateRecipe(this.recipe.copyButDefaultServings(servings));
-  }
-
-  onTotalTimeUpdate(time: number): void {
-    this.updateRecipe(this.recipe.copyButTotalTime(time));
+  onIngredientsUpdated(ingredients: Array<Ingredient>): void {
+    this.recipe.ingredients = ingredients;
+    this.updateRecipe();
   }
 
   onRecipeTagsChanged(tags: Array<string>): void {
-    this.updateRecipe(this.recipe.copyButTags(new Set(tags)));
+    this.recipe.tags = new Set(tags);
+    this.updateRecipe();
+  }
+
+  updateRecipe(): void {
+    this.recipeService.replaceRecipe(this.recipe.id, this.recipe);
+  }
+
+  onRecipeChanged(recipe: Recipe): void {
+    this.recipe = recipe;
+    this.updateRecipe();
   }
 }

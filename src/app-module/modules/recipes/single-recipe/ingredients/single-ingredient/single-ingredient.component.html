@@ -4,14 +4,17 @@
       <input class="form-control"
              type="number"
              placeholder="e.g. 200"
-             [(ngModel)]="ingredient.amount"
-             (ngModelChange)="ingredientUpdated()"/>
+             [ngModel]="ingredient.amount"
+             (ngModelChange)="onAmountUpdated($event)"/>
     </div>
     <div class="col-6 pl-0 pr-0">
       <select class="form-select"
-              [(ngModel)]="ingredient.unit"
-              (ngModelChange)="ingredientUpdated()">
-        <option *ngFor="let unit of allMeasurementUnits" [value]="unit.title">{{ unit.title }}</option>
+              [ngModel]="ingredient.measurementUnit"
+              (ngModelChange)="onMeasurementUnitUpdated($event)">
+        <option *ngFor="let unit of allMeasurementUnits"
+                [ngValue]="unit">
+          {{ unit.title }}
+        </option>
       </select>
     </div>
   </div>
@@ -19,8 +22,8 @@
     <div class="col-9 pl-0 pr-1">
       <input class="form-control"
              placeholder="e.g. Cheese"
-             [(ngModel)]="ingredient.title"
-             (ngModelChange)="ingredientUpdated()"/>
+             [ngModel]="ingredient.title"
+             (ngModelChange)="onTitleUpdated($event)"/>
     </div>
     <div class="col-3 pl-0 pr-0 text-center">
       <button class="btn btn-danger" (click)="onDeleteIngredientClicked()">
