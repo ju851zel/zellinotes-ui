@@ -105,4 +105,9 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     this.recipe = recipe;
     this.updateRecipe();
   }
+
+  onImageChanged(image: string): void {
+    this.recipe.image = image;
+    this.updateRecipe();
+  }
 }

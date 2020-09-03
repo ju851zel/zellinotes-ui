@@ -17,6 +17,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.component';
 import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic-properties.component';
 import {DndModule} from 'ngx-drag-drop';
+import {ImageCropperModule} from 'ngx-image-cropper';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {DndModule} from 'ngx-drag-drop';
     FormsModule,
     NgbModule,
     DndModule,
+    ImageCropperModule
   ]
 })
 export class RecipeModule {

@@ -8,9 +8,11 @@
                    (duplicateRecipe)="duplicate()">
   </app-top-buttons>
 
-  <div class="row align-content-center">
+  <div class="align-content-center">
     <div class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
-      <app-image [recipeId]="recipe.id"></app-image>
+      <app-image [editMode]="editMode"
+                 [defaultImageAsBase64]="recipe.image"
+                 (imageChanged)="onImageChanged($event)"></app-image>
     </div>
     <div class="col-sm-12 col-md-7 mt-3">
       <app-basic-properties [editMode]="editMode"
