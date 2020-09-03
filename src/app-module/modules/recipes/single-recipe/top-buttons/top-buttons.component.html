@@ -1,27 +1,27 @@
 <div class="row">
   <div class="col">
     <button class="mx-1 btn btn-primary"
-            title="Go Back to all recipes"
+            ngbTooltip="Go Back to all recipes"
             (click)="onNavigateToRecipes()">
       <bi name="Arrow-Left"></bi>
     </button>
     <button class="mx-1 btn btn-primary"
-            title="Edit recipe"
+            ngbTooltip="Toggle edit mode"
             (click)="onToggleEditable()">
       <bi [name]="editMode ? 'Unlock' : 'Lock'"></bi>
     </button>
     <button class="mx-1 btn btn-primary"
-            title="Delete recipe"
+            ngbTooltip="Delete recipe"
             (click)="onDeleteRecipe()">
       <bi name="Trash"></bi>
     </button>
     <button class="mx-1 btn btn-primary"
-            title="Export(download) recipe"
+            ngbTooltip="Export(download) recipe"
             (click)="onDownloadRecipe()">
       <bi name="Download"></bi>
     </button>
     <button class="mx-1 btn btn-primary"
-            title="Duplicate"
+            ngbTooltip="Duplicate recipe"
             (click)="onDuplicateRecipe()">
       <bi name="Files"></bi>
     </button>

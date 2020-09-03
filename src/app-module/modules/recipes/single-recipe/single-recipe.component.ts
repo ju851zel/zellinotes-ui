@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs';
 })
 export class SingleRecipeComponent implements OnInit, OnDestroy {
   public recipe: Recipe;
-  public editMode = true;
+  public editMode = false;
   public loadingRecipe = true;
 
   private recipeSubscriber: Subscription;
