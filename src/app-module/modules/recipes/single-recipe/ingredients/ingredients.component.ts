@@ -58,16 +58,13 @@ export class IngredientsComponent implements OnInit, OnChanges {
 
     if (this.editMode) {
       if (this.ingredientsIsEmpty() || this.lastIngredientNotEmpty()) {
-        console.log('adding empty ingredient');
         this.ingredients.push(new Ingredient(this.ingredients.length, undefined, undefined, undefined));
       }
     } else {
       if (this.lastIngredientIsEmpty()) {
-        console.log('removing last empty ingredient');
         this.ingredients.pop();
       }
     }
-    console.log('ingredients:', this.ingredients);
   }
 
   ingredientsIsDefined(): boolean {

@@ -13,7 +13,6 @@ export class RecipeService {
   }
 
   addRecipe(recipe: Recipe): void {
-    console.log('Added recipe with id:' + recipe.id);
     this.internalRecipes.push(recipe);
     this.recipes.next(this.internalRecipes);
   }

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as lastElement from 'lodash/last';
+import {DndDropEvent} from 'ngx-drag-drop';
 
 @Component({
   selector: 'app-instructions',
@@ -19,8 +20,29 @@ export class InstructionsComponent implements OnInit, OnChanges {
   instructions: Array<string>;
   collapsed = false;
 
+  draggable = {
+    effectAllowed: 'move',
+    handle: true
+  };
+
+
+  onInstructionDrop(event: DndDropEvent): void {
+    const indexDestination = event.index;
+    const indexSource = event.data;
+    const element = this.instructions[indexSource];
+    if (indexSource > indexDestination) {
+      this.instructions.splice(indexSource, 1);
+      this.instructions.splice(indexDestination, 0, element);
+    } else if (indexDestination > indexSource) {
+      this.instructions.splice(indexSource, 1);
+      this.instructions.splice(indexDestination - 1, 0, element);
+    }
+  }
+
   ngOnInit(): void {
     this.instructions = this.defaultInstructions.map(inst => inst);
+    console.log('defaultinst:', this.defaultInstructions);
+    console.log('inst:', this.defaultInstructions);
     this.addEmptyInstructionWhenNecessary();
   }
 

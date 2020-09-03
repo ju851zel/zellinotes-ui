@@ -16,6 +16,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.component';
 import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic-properties.component';
+import {DndModule} from 'ngx-drag-drop';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic
     IngredientsComponent,
     SingleIngredientComponent,
     TopButtonsComponent,
-    BasicPropertiesComponent
+    BasicPropertiesComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +40,7 @@ import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic
     BrowserAnimationsModule,
     FormsModule,
     NgbModule,
+    DndModule,
   ]
 })
 export class RecipeModule {

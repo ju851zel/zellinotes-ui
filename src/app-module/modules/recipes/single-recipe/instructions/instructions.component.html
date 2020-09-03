@@ -18,9 +18,21 @@
         No Instructions yet
       </h5>
     </div>
-    <ul *ngIf="instructionsNotEmpty()"
+
+    <ul [dndDropzone]
+        (dndDrop)="onInstructionDrop($event)"
+        [dndEffectAllowed]="draggable.effectAllowed"
+        *ngIf="instructionsNotEmpty()"
         id="list-instructions" class="list-group list-group-flush instructionsGroup">
-      <li *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
+
+      <div style="border: 1px orangered solid; border-radius: 5px; padding: 15px;"
+           dndPlaceholderRef>
+        placeholder
+      </div>
+
+      <li [dndDraggable]="index"
+          [dndEffectAllowed]="draggable.effectAllowed"
+          *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
           class="list-group-item d-flex">
         <h3 class="mr-3 mt-1">
           {{ index + 1 }}.
@@ -35,12 +47,14 @@
         </p>
         <div *ngIf="editMode"
              class="col-sm-2 text-center pr-0">
-          <button *ngIf="instructions.length != 1 && index != instructions.length - 1" class="btn btn-primary"
+          <button *ngIf="instructions.length != 1 && index != instructions.length - 1"
+                  class="btn btn-danger"
                   (click)="deleteInstruction(index)">
             <bi name="Trash"></bi>
           </button>
-          <button class="btn btn-primary"
-                  disabled>
+          <button *ngIf="instructions.length != 1 && index != instructions.length - 1"
+                  class="btn"
+                  dndHandle>
             <bi name="Arrows-Move"></bi>
           </button>
         </div>

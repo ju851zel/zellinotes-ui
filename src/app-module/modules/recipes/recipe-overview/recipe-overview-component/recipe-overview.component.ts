@@ -21,7 +21,6 @@ export class RecipeOverviewComponent implements OnInit {
   }
 
   createRecipe(): void {
-    console.log('recipeservice overview', this.recipeService);
     const recipe = new Recipe(
       this.recipeService.recipes.getValue().length.toString(),
       30,
@@ -34,7 +33,7 @@ export class RecipeOverviewComponent implements OnInit {
       'test title',
       new Set(['vegan', 'fast', 'test']),
       'https://img.taste.com.au/-RGbsS2h/taste/2019/05/chocolate-and-nutella-smores-cake-149475-2.jpg',
-      [],
+      ['1', '2', '3', '4', '5'],
       2);
     this.recipeService.addRecipe(recipe);
   }
