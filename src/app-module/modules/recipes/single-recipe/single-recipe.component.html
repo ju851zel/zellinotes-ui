@@ -28,13 +28,13 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 col-lg-8 mt-2 pr-md-1">
+    <div class="col-md-7 col-lg-8 mt-2 pr-md-1">
       <app-instructions [editMode]="editMode"
                         [defaultInstructions]="recipe.instructions"
                         (instructionChanged)="onInstructionsUpdated($event)">
       </app-instructions>
     </div>
-    <div class="col-md-6 col-lg-4 mt-2 pl-md-1">
+    <div class="col-md-5 col-lg-4 mt-2 pl-md-1">
       <app-ingredients [editMode]="editMode"
                        [defaultIngredients]="recipe.ingredients"
                        (ingredientsChanged)="onIngredientsUpdated($event)">

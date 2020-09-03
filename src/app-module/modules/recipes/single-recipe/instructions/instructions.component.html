@@ -25,37 +25,48 @@
         *ngIf="instructionsNotEmpty()"
         id="list-instructions" class="list-group list-group-flush instructionsGroup">
 
-      <div style="border: 1px orangered solid; border-radius: 5px; padding: 15px;"
-           dndPlaceholderRef>
-        placeholder
-      </div>
+      <li class="list-group-item-light"
+          style="border-radius: 5px; padding: 20px;"
+          dndPlaceholderRef>
+        Drop here ...
+      </li>
 
       <li [dndDraggable]="index"
           [dndEffectAllowed]="draggable.effectAllowed"
           *ngFor="let instruction of instructions; let index = index; trackBy:trackByInstructions"
-          class="list-group-item d-flex">
-        <h3 class="mr-3 mt-1">
-          {{ index + 1 }}.
-        </h3>
+          class="list-group-item d-flex"
+          [class.pl-1]="editMode"
+          [class.justify-content-between]="editMode"
+          [class.justify-content-start]="viewMode()">
+        <div class="text-center"
+             [class.mr-2]="viewMode()">
+          <h3>
+            {{ index + 1 }}.
+          </h3>
+          <button *ngIf="editMode && instructions.length != 1 && index != instructions.length - 1"
+                  class="btn"
+                  dndHandle>
+            <bi name="Arrows-Move"></bi>
+          </button>
+          <button *ngIf="editMode && index == instructions.length - 1"
+                  class="btn"
+                  disabled>
+            <bi name=""></bi>
+          </button>
+        </div>
         <textarea *ngIf="editMode"
-                  class="form-control w-75"
+                  class="form-control mx-2"
                   placeholder="Type your instructions. E.g. Boil water ..."
                   [ngModel]="instructions[index]"
                   (ngModelChange)="updateInstruction($event, index)"></textarea>
-        <p *ngIf="viewMode()">
+        <p *ngIf="viewMode()" class=" mx-2" style="text-align: justify">
           {{ instructions[index] }}
         </p>
-        <div *ngIf="editMode"
-             class="col-sm-2 text-center pr-0">
+        <div *ngIf="editMode" class="">
           <button *ngIf="instructions.length != 1 && index != instructions.length - 1"
                   class="btn btn-danger"
                   (click)="deleteInstruction(index)">
             <bi name="Trash"></bi>
-          </button>
-          <button *ngIf="instructions.length != 1 && index != instructions.length - 1"
-                  class="btn"
-                  dndHandle>
-            <bi name="Arrows-Move"></bi>
           </button>
         </div>
       </li>
