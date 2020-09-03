@@ -53,14 +53,19 @@ export class ImageComponent implements OnChanges {
   }
 
   editFile(): void {
+    console.log(this.image);
     if (this.cropper.originalSelectedEvent) {
       this.cropper.imageAsBase64 = undefined;
     } else {
-      console.log(this.image);
       this.cropper.imageAsBase64 = this.image;
     }
     this.cropper.croppedResult = undefined;
     this.cropper.visible = true;
+  }
+
+  removeImage(): void {
+    this.image = null;
+    this.imageChanged.emit(this.image);
   }
 }
 

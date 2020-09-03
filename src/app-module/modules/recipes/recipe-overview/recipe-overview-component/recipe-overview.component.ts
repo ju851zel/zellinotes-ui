@@ -32,7 +32,7 @@ export class RecipeOverviewComponent implements OnInit {
       'test description',
       'test title',
       new Set(['vegan', 'fast', 'test']),
-      'https://img.taste.com.au/-RGbsS2h/taste/2019/05/chocolate-and-nutella-smores-cake-149475-2.jpg',
+      null,
       ['1', '2', '3', '4', '5'],
       2);
     this.recipeService.addRecipe(recipe);

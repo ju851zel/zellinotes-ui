@@ -8,8 +8,9 @@
                    (duplicateRecipe)="duplicate()">
   </app-top-buttons>
 
-  <div class="align-content-center">
-    <div class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
+  <div class="row align-content-center">
+    <div *ngIf="recipe.image || editMode"
+         class="col-sm-12 col-md-5 mt-3 px-0 px-md-3">
       <app-image [editMode]="editMode"
                  [defaultImageAsBase64]="recipe.image"
                  (imageChanged)="onImageChanged($event)"></app-image>

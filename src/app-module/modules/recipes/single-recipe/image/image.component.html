@@ -1,22 +1,27 @@
-<label *ngIf="editMode" class="form-label my-0"><h3>Image</h3></label>
-<div class=" border border-grey p-2 rounded">
-  <div *ngIf="editMode" class="d-flex flex-wrap justify-content-center">
-    <button class="btn btn-primary"
+<div class=" border border-grey p-1 rounded">
+  <div *ngIf="editMode" class="d-flex justify-content-center">
+    <button class="btn btn-primary mx-1"
             (click)="openFileSelectingDialog(fileInput)">
       <bi name="Image"></bi>
       <div style="font-size: xx-small">Select</div>
     </button>
-    <button class="btn btn-primary"
+    <button class="btn btn-primary mx-1"
             [disabled]="!cropper.visible"
             (click)="saveFile()">
       <bi name="Check-2"></bi>
       <div style="font-size: xx-small">Save</div>
     </button>
-    <button class="btn btn-primary"
-            [disabled]="cropper.visible"
+    <button class="btn btn-primary mx-1"
+            [disabled]="(!cropper.visible && !image) || cropper.visible"
             (click)="editFile()">
       <bi name="Pencil"></bi>
-      <div style="font-size: xx-small">Edit</div>
+      <div style="font-size: xx-small">Crop</div>
+    </button>
+    <button class="btn btn-primary mx-1"
+            [disabled]="!image"
+            (click)="removeImage()">
+      <bi name="X"></bi>
+      <div style="font-size: xx-small">Remove</div>
     </button>
   </div>
   <input type="file"
@@ -34,7 +39,7 @@
                  (loadImageFailed)="loadImageFailed()">
   </image-cropper>
 
-  <div class="text-center">
+  <div class="text-center mt-1">
     <img class="img-fluid" *ngIf="!cropper.visible"
          [src]="image"/>
   </div>
