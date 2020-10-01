@@ -73,4 +73,16 @@ export class BasicPropertiesComponent implements OnInit, OnChanges {
   notifyRecipeChanged(): void {
     this.recipeChanged.emit(this.recipe);
   }
+
+  isEasyDifficulty(difficulty: Difficulty): boolean {
+    return Difficulty.isEasyDifficulty(difficulty);
+  }
+
+  isMediumDifficulty(difficulty: Difficulty): boolean {
+    return Difficulty.isMediumDifficulty(difficulty);
+  }
+
+  isHardDifficulty(difficulty: Difficulty): boolean {
+    return Difficulty.isHardDifficulty(difficulty);
+  }
 }

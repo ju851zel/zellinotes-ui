@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RecipeOverviewComponent} from './recipe-overview/recipe-overview-component/recipe-overview.component';
 import {IconsModule} from '../icons/icons.module';
@@ -14,11 +14,11 @@ import {IngredientsComponent} from './single-recipe/ingredients/ingredients.comp
 import {SingleIngredientComponent} from './single-recipe/ingredients/single-ingredient/single-ingredient.component';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { TopButtonsComponent } from './single-recipe/top-buttons/top-buttons.component';
-import { BasicPropertiesComponent } from './single-recipe/basic-properties/basic-properties.component';
+import {TopButtonsComponent} from './single-recipe/top-buttons/top-buttons.component';
+import {BasicPropertiesComponent} from './single-recipe/basic-properties/basic-properties.component';
 import {DndModule} from 'ngx-drag-drop';
 import {ImageCropperModule} from 'ngx-image-cropper';
-
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -42,8 +42,10 @@ import {ImageCropperModule} from 'ngx-image-cropper';
     FormsModule,
     NgbModule,
     DndModule,
-    ImageCropperModule
-  ]
+    ImageCropperModule,
+    NgxSpinnerModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RecipeModule {
 }

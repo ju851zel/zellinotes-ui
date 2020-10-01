@@ -26,23 +26,23 @@
   <div class="col-sm-auto text-center">
     <!--recipe-difficulty-->
     <bi ngbTooltip="Difficulty" class="text-warning width-50px" name="bullseye"></bi>
-    <p *ngIf="!editMode" class="form-label">{{ recipe.difficulty.description }}</p>
+    <p *ngIf="!editMode" class="form-label">{{ recipe.difficulty }}</p>
     <p *ngIf="editMode" class="form-label">Difficulty</p>
     <div *ngIf="editMode" class="btn-group-sm" role="group" aria-label="Difficulty selection">
       <button type="button"
-              [class.active]="recipe.difficulty.isEasyDifficulty()"
+              [class.active]="isEasyDifficulty(recipe.difficulty)"
               class="btn btn-outline-primary"
               (click)="setDifficultyEasy()">
         Easy
       </button>
       <button type="button"
-              [class.active]="recipe.difficulty.isMediumDifficulty()"
+              [class.active]="isMediumDifficulty(recipe.difficulty)"
               class="btn btn-outline-primary"
               (click)="setDifficultyMedium()">
         Medium
       </button>
       <button type="button"
-              [class.active]="recipe.difficulty.isHardDifficulty()"
+              [class.active]="isHardDifficulty(recipe.difficulty)"
               class="btn btn-outline-primary"
               (click)="setDifficultyHard()">
         Hard
