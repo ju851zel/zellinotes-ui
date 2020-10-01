@@ -1,25 +1,19 @@
 export class Difficulty {
-  public static EASY = new Difficulty(0, 'Easy');
-  public static MEDIUM = new Difficulty(1, 'Medium');
-  public static HARD = new Difficulty(2, 'Hard');
+  public static EASY = 'Easy';
+  public static MEDIUM = 'Medium';
+  public static HARD = 'Hard';
 
-  private constructor(public level: number,
-                      public description: string) {
+
+  static isEasyDifficulty(difficulty): boolean {
+    return difficulty === Difficulty.EASY;
   }
 
-  isEasyDifficulty(): boolean {
-    return this.level === Difficulty.EASY.level &&
-      this.description === Difficulty.EASY.description;
+  static isMediumDifficulty(difficulty): boolean {
+    return difficulty === Difficulty.MEDIUM;
   }
 
-  isMediumDifficulty(): boolean {
-    return this.level === Difficulty.MEDIUM.level &&
-      this.description === Difficulty.MEDIUM.description;
-  }
-
-  isHardDifficulty(): boolean {
-    return this.level === Difficulty.HARD.level &&
-      this.description === Difficulty.HARD.description;
+  static isHardDifficulty(difficulty): boolean {
+    return difficulty === Difficulty.HARD;
   }
 }
 
@@ -48,7 +42,7 @@ export class MeasurementUnit {
 
 
 export class Ingredient {
-  constructor(public id: number,
+  constructor(public id: string,
               public amount: number,
               public title: string,
               public measurementUnit: MeasurementUnit) {
@@ -88,10 +82,28 @@ export class Recipe {
               public difficulty: Difficulty,
               public description: string,
               public title: string,
-              public tags: Set<string>,
+              public tags: Set<string> | Array<string>,
               public image: string,
               public instructions: Array<string>,
               public defaultServings: number) {
+  }
+
+  static from(recipe: Recipe): Recipe {
+    return new Recipe(
+      recipe.id,
+      recipe.cookingTimeInMinutes,
+      recipe.created,
+      recipe.lastModified,
+      recipe.ingredients.map(ing => ing.clone()),
+      recipe.version,
+      recipe.difficulty,
+      recipe.description,
+      recipe.title,
+      recipe.tags,
+      recipe.image,
+      recipe.instructions,
+      recipe.defaultServings,
+    );
   }
 
   clone(): Recipe {
@@ -111,6 +123,5 @@ export class Recipe {
       this.defaultServings,
     );
   }
-
 }
 
