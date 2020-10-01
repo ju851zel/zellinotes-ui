@@ -74,8 +74,13 @@ export class RecipeService {
   }
 
   deleteRecipe(recipeId: string): void {
-    this.internalRecipes = this.internalRecipes.filter(recipe => recipe.id !== recipeId);
-    this.update();
+    this.http.delete(`${this.url}/recipes/${recipeId}`)
+      .subscribe(_ => {
+          console.log('RecipeService: Deleted recipe');
+          this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
+          this.update();
+        }
+      );
   }
 
   updateRecipe(recipeId: string, recipe: Recipe): void {

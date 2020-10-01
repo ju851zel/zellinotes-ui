@@ -57,7 +57,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
   deleteRecipe(): void {
-    console.log('todo');
+    this.recipeService.deleteRecipe(this.recipe.id);
   }
 
   downloadRecipe(): void {
@@ -87,6 +87,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     if (!this.updatedInLast5secs) {
       this.updatedInLast5secs = true;
       setTimeout(() => {
+        this.recipe.lastModified = new Date();
         this.recipeService.updateRecipe(this.recipe.id, this.recipe);
         this.updatedInLast5secs = false;
       }, 3000);
