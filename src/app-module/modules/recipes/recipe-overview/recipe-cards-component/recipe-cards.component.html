@@ -5,7 +5,7 @@
 
   <ngx-masonry [options]="cardOptions">
     <div ngxMasonryItem class="recipe-card card text-center" *ngFor="let recipe of recipes">
-      <img class="card-img recipe-card-image card-img-top" [src]="recipe.image" alt="Recipe Image"/>
+      <img class="card-img recipe-card-image card-img-top" [src]="recipe.image" alt=""/>
       <h5 class="card-title mt-2">{{ recipe.title }}</h5>
       <div class="card-text">{{ recipe.description }}</div>
       <button class="m-3 btn btn-success"
