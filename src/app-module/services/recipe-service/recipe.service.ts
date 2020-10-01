@@ -83,6 +83,11 @@ export class RecipeService {
       );
   }
 
+  duplicateRecipe(recipeId: string): void {
+    const recipe = this.internalRecipes.find(r => r.id === recipeId);
+    this.addRecipe(recipe);
+  }
+
   downloadRecipe(recipeId: string): void {
     const recipe = JSON.stringify(this.internalRecipes.find(r => r.id === recipeId));
     const element = document.createElement('a');

@@ -65,7 +65,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
   duplicate(): void {
-    console.log('todo');
+    this.recipeService.duplicateRecipe(this.recipe.id);
   }
 
   onInstructionsUpdated(instructions: Array<string>): void {
