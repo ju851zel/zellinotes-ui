@@ -18,32 +18,19 @@ export class RecipeOverviewComponent implements OnInit {
   recipes: any;
 
   ngOnInit(): void {
+    this.fetchCurrentTabRecipes();
   }
 
-  createRecipe(): void {
-    const recipe = new Recipe(
-      this.recipeService.recipes.getValue().length.toString(),
-      30,
-      new Date(),
-      new Date(),
-      [],
-      1,
-      Difficulty.EASY,
-      'test description',
-      'test title',
-      new Set(['vegan', 'fast', 'test']),
-      null,
-      ['1', '2', '3', '4', '5'],
-      2);
-    this.recipeService.addRecipe(recipe);
+  createDefaultRecipe(): void {
+    this.recipeService.addDefaultRecipe();
   }
 
-  fetchCurrentTabRecipes() {
-    //
+  fetchCurrentTabRecipes(): void {
+    this.recipeService.fetchAllRecipes();
   }
 
 
-  downloadRecipes() {
+  downloadRecipes(): void {
     //
   }
 
