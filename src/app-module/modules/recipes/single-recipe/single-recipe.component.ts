@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Difficulty, Ingredient, Recipe} from '../../../model/recipe';
+import {Ingredient, Recipe} from '../../../model/recipe';
 import {RecipeService} from '../../../services/recipe-service/recipe.service';
 import {Subscription} from 'rxjs';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 @Component({
@@ -13,40 +14,25 @@ import {Subscription} from 'rxjs';
 export class SingleRecipeComponent implements OnInit, OnDestroy {
   public recipe: Recipe;
   public editMode = false;
-  public loadingRecipe = true;
+  public updatedInLast5secs = false;
+
 
   private recipeSubscriber: Subscription;
 
   constructor(private router: Router,
+              private spinner: NgxSpinnerService,
               private activatedRoute: ActivatedRoute,
               private recipeService: RecipeService) {
   }
 
-  createTestRecipe(): void {
-    const recipe = new Recipe(
-      this.recipeService.recipes.getValue().length.toString(),
-      30,
-      new Date(),
-      new Date(),
-      [],
-      1,
-      Difficulty.EASY,
-      'test description',
-      'test title',
-      new Set(['vegan', 'fast', 'test']),
-      null,
-      ['1', '2', '3', '4', '5'],
-      2);
-    this.recipeService.addRecipe(recipe);
-  }
 
   ngOnInit(): void {
-    this.createTestRecipe();
+    this.spinner.show('pageIsLoadingSpinner');
     const recipeId = this.getRecipeIdFromURL();
     this.recipeSubscriber = this.recipeService.recipes.subscribe(recipes => {
       const foundRecipe = recipes.find(recipe => recipe.id === recipeId);
       if (foundRecipe) {
-        this.loadingRecipe = false;
+        this.spinner.hide('pageIsLoadingSpinner');
         this.recipe = foundRecipe.clone();
       } else {
         this.navigateToRecipes();
@@ -98,7 +84,13 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
   updateRecipe(): void {
-    this.recipeService.replaceRecipe(this.recipe.id, this.recipe);
+    if (!this.updatedInLast5secs) {
+      this.updatedInLast5secs = true;
+      setTimeout(() => {
+        this.recipeService.updateRecipe(this.recipe.id, this.recipe);
+        this.updatedInLast5secs = false;
+      }, 3000);
+    }
   }
 
   onRecipeChanged(recipe: Recipe): void {
