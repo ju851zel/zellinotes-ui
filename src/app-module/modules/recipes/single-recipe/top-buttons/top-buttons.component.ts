@@ -1,38 +1,61 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
-  selector: 'app-top-buttons',
-  templateUrl: './top-buttons.component.html',
-  styleUrls: ['./top-buttons.component.css']
+    selector: 'app-top-buttons',
+    templateUrl: './top-buttons.component.html',
+    styleUrls: ['./top-buttons.component.css']
 })
 export class TopButtonsComponent {
 
-  @Input() editMode: boolean;
+    @Input() editMode: boolean;
 
-  @Output() navigateToRecipes = new EventEmitter<boolean>();
-  @Output() editableToggled = new EventEmitter<boolean>();
-  @Output() deleteRecipe = new EventEmitter<boolean>();
-  @Output() downloadRecipe = new EventEmitter<boolean>();
-  @Output() duplicateRecipe = new EventEmitter<boolean>();
+    private recipeIsSavedInner: boolean;
 
-  onNavigateToRecipes(): void {
-    this.navigateToRecipes.emit(true);
-  }
 
-  onToggleEditable(): void {
-    this.editableToggled.emit(true);
-  }
+    get recipeIsSaved(): boolean {
+        return this.recipeIsSavedInner;
+    }
 
-  onDeleteRecipe(): void {
-    this.deleteRecipe.emit(true);
-  }
+    @Input()
+    set recipeIsSaved(value: boolean) {
+        if (value) {
+            this.spinner.hide('updatedRecipeSpinner');
+        } else {
+            this.spinner.show('updatedRecipeSpinner');
+        }
+        this.recipeIsSavedInner = value;
+    }
 
-  onDownloadRecipe(): void {
-    this.downloadRecipe.emit(true);
-  }
+    @Output() navigateToRecipes = new EventEmitter<boolean>();
+    @Output() editableToggled = new EventEmitter<boolean>();
+    @Output() deleteRecipe = new EventEmitter<boolean>();
+    @Output() downloadRecipe = new EventEmitter<boolean>();
+    @Output() duplicateRecipe = new EventEmitter<boolean>();
 
-  onDuplicateRecipe(): void {
-    this.duplicateRecipe.emit(true);
-  }
+
+    constructor(private spinner: NgxSpinnerService) {
+
+    }
+
+    onNavigateToRecipes(): void {
+        this.navigateToRecipes.emit(true);
+    }
+
+    onToggleEditable(): void {
+        this.editableToggled.emit(true);
+    }
+
+    onDeleteRecipe(): void {
+        this.deleteRecipe.emit(true);
+    }
+
+    onDownloadRecipe(): void {
+        this.downloadRecipe.emit(true);
+    }
+
+    onDuplicateRecipe(): void {
+        this.duplicateRecipe.emit(true);
+    }
 
 }

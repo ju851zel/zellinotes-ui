@@ -7,7 +7,8 @@ import {RecipeModule} from './modules/recipes/recipe.module';
 import {AppRoutingModule} from './modules/app-routing/app-routing.module';
 import {NavbarComponent} from './navbar-component/navbar.component';
 import {HomeModule} from './modules/home/home.module';
-import {ActivatedRouteSnapshot} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
+import {RecipeService} from './services/recipe-service/recipe.service';
 
 @NgModule({
   declarations: [
@@ -19,9 +20,12 @@ import {ActivatedRouteSnapshot} from '@angular/router';
     NgbModule,
     AppRoutingModule,
     RecipeModule,
-    HomeModule
+    HomeModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    // RecipeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
