@@ -83,6 +83,21 @@ export class RecipeService {
       );
   }
 
+  downloadRecipe(recipeId: string): void {
+    const recipe = JSON.stringify(this.internalRecipes.find(r => r.id === recipeId));
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(recipe));
+    element.setAttribute('download', 'recipe.json');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+
   updateRecipe(recipeId: string, recipe: Recipe): void {
     this.http.put(`${this.url}/recipes/${recipe.id}`, recipe)
       .subscribe(_ => {

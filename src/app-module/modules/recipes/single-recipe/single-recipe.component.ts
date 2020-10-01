@@ -61,7 +61,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   }
 
   downloadRecipe(): void {
-    console.log('todo');
+    this.recipeService.downloadRecipe(this.recipe.id);
   }
 
   duplicate(): void {
