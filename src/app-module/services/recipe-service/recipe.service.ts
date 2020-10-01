@@ -1,20 +1,76 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Recipe} from '../../model/recipe';
+import {Difficulty, Recipe} from '../../model/recipe';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class RecipeService {
+  private url = 'http://127.0.0.1:8080/api/v1';
   private internalRecipes: Array<Recipe> = [];
   public readonly recipes = new BehaviorSubject<Array<Recipe>>(this.internalRecipes);
 
-  constructor() {
+  constructor(private http: HttpClient) {
+  }
+
+  addDefaultRecipe(): void {
+    const recipe = new Recipe(
+      '',
+      30,
+      new Date(),
+      new Date(),
+      [],
+      1,
+      Difficulty.EASY,
+      '',
+      'New Recipe',
+      [],
+      null,
+      [],
+      2);
+    this.addRecipe(recipe);
+  }
+
+  createTestRecipe(): Recipe {
+    return new Recipe(
+      '10',
+      30,
+      new Date(),
+      new Date(),
+      [],
+      1,
+      Difficulty.EASY,
+      'test description',
+      'test title',
+      new Set(['vegan', 'fast', 'test']),
+      null,
+      ['1', '2', '3', '4', '5'],
+      2);
+  }
+
+  fetchAllRecipes(): void {
+    this.http.get(`${this.url}/recipes`)
+      .subscribe((recipes: Array<Recipe>) => {
+          console.log('RecipeService: Fetching all recipes');
+          recipes = recipes.map(recipe => Recipe.from(recipe));
+          this.internalRecipes = recipes;
+          this.update();
+        }
+      );
   }
 
   addRecipe(recipe: Recipe): void {
-    this.internalRecipes.push(recipe);
-    this.recipes.next(this.internalRecipes);
+    this.http.post(`${this.url}/recipes`, recipe)
+      .subscribe((obj: { $oid: string }) => {
+          console.log('RecipeService: Added new recipe');
+          recipe.id = obj.$oid;
+          this.internalRecipes.push(recipe);
+          this.update();
+        }
+      );
   }
 
   deleteRecipe(recipeId: string): void {
@@ -22,11 +78,15 @@ export class RecipeService {
     this.update();
   }
 
-  replaceRecipe(recipeId: string, recipe: Recipe): void {
-    console.log('Updated recipe: ', recipe);
-    this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
-    this.internalRecipes.push(recipe);
-    this.update();
+  updateRecipe(recipeId: string, recipe: Recipe): void {
+    this.http.put(`${this.url}/recipes/${recipe.id}`, recipe)
+      .subscribe(_ => {
+          console.log('RecipeService: Update recipe');
+          this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipe.id);
+          this.internalRecipes.push(recipe);
+          this.update();
+        }
+      );
   }
 
   update(): void {
