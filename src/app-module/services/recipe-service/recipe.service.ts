@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Difficulty, Recipe} from '../../model/recipe';
+import {Difficulty, Recipe, UpdateResult} from '../../model/recipe';
 import {HttpClient} from '@angular/common/http';
 import {NotifierService} from 'angular-notifier';
 
@@ -11,8 +11,10 @@ import {NotifierService} from 'angular-notifier';
 
 export class RecipeService {
   private url = 'http://127.0.0.1:8080/api/v1';
-  private internalRecipes: Array<Recipe> = [];
-  public readonly recipes = new BehaviorSubject<Array<Recipe>>(this.internalRecipes);
+  private updateTimer = true;
+
+  public readonly recipes = new BehaviorSubject<Array<Recipe>>([]);
+  public readonly updateResult = new BehaviorSubject<UpdateResult>(UpdateResult.Success);
 
   constructor(private http: HttpClient,
               private notifier: NotifierService) {
@@ -29,117 +31,127 @@ export class RecipeService {
       Difficulty.EASY,
       '',
       'New Recipe',
-      [],
+      new Set(),
       null,
       [],
       2);
     this.addRecipe(recipe);
   }
 
-  createTestRecipe(): Recipe {
-    return new Recipe(
-      '10',
-      30,
-      new Date(),
-      new Date(),
-      [],
-      1,
-      Difficulty.EASY,
-      'test description',
-      'test title',
-      new Set(['vegan', 'fast', 'test']),
-      null,
-      ['1', '2', '3', '4', '5'],
-      2);
-  }
+  // createTestRecipe(): Recipe {
+  //   return new Recipe(
+  //     '10',
+  //     30,
+  //     new Date(),
+  //     new Date(),
+  //     [],
+  //     1,
+  //     Difficulty.EASY,
+  //     'test description',
+  //     'test title',
+  //     new Set(['vegan', 'fast', 'test']),
+  //     null,
+  //     ['1', '2', '3', '4', '5'],
+  //     2);
+  // }
 
   fetchAllRecipes(): void {
-    this.http.get(`${this.url}/recipes`)
-      .subscribe((recipes: Array<Recipe>) => {
-          console.log('RecipeService: Fetching all recipes');
-          recipes = recipes.map(recipe => Recipe.from(recipe));
-          this.internalRecipes = recipes;
-          this.update();
-        },
-        error => {
-          this.notifyError('Could not fetch all recipes', error);
-        }
+    this.http
+      .get(`${this.url}/recipes`)
+      .subscribe(
+        (recipes: Array<Recipe>) => this.notifyUpdate(recipes.map(r => Recipe.from(r)), 'Fetching all recipes'),
+        error => this.notifyError('Could not fetch all recipes', error)
       );
   }
 
-  notifyError(msg: string, error: any): void {
-    console.error('RecipeService: ' + msg, error);
-    this.notifier.notify('error', msg);
-  }
 
   addRecipe(recipe: Recipe): void {
-    this.http.post(`${this.url}/recipes`, recipe)
-      .subscribe((obj: { $oid: string }) => {
-          console.log('RecipeService: Added new recipe');
+    this.http
+      .post(`${this.url}/recipes`, recipe)
+      .subscribe(
+        (obj: { $oid: string }) => {
           recipe.id = obj.$oid;
-          this.internalRecipes.push(recipe);
-          this.update();
-        }, (error) => {
-          this.notifyError('Could not add recipe', error);
-        }
+          const recipes = this.recipes.getValue();
+          recipes.push(recipe);
+          this.notifyUpdate(recipes, 'Added new recipe');
+        },
+        (error) => this.notifyError('Could not add recipe', error)
       );
   }
 
   deleteRecipe(recipeId: string): void {
     this.http.delete(`${this.url}/recipes/${recipeId}`)
-      .subscribe(_ => {
-          console.log('RecipeService: Deleted recipe');
-          this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
-          this.update();
-        }, (error) => {
-          this.notifyError('Could not delete recipe', error);
-        }
+      .subscribe(
+        _ => this.notifyUpdate(this.recipes.getValue().filter(rec => rec.id !== recipeId), 'Deleted recipe'),
+        (error) => this.notifyError('Could not delete recipe', error)
       );
   }
 
-  updateRecipeWithoutImage(recipe: Recipe): void{
-    const recipeToSend = recipe.clone();
-    recipeToSend.image = null;
-    this.http.put(`${this.url}/recipes/${recipe.id}`, recipeToSend)
-      .subscribe(
-        _ => console.log('RecipeService: Update recipe'),
-        error => {
-          this.notifyError('Could not update recipe', error)
-        });
+  updateRecipeWithoutImage(recipe: Recipe): void {
+    this.updateResult.next(UpdateResult.Waiting);
+    if (this.updateTimer) {
+      this.updateTimer = false;
+      setTimeout(() => {
+        this.updateTimer = true;
+        const recipeToSend = recipe.clone();
+        recipeToSend.image = null;
+        // @ts-ignore
+        recipeToSend.tags = [...recipeToSend.tags];
+        this.http
+          .put(`${this.url}/recipes/${recipe.id}`, recipeToSend)
+          .subscribe(
+            _ => this.notifyUpdate(null, 'Update recipe'),
+            error => this.notifyError('Could not update recipe', error)
+          );
+      }, 2000);
+    }
   }
 
   updateRecipeImage(recipe: Recipe): void {
-    this.http.put(`${this.url}/recipes/${recipe.id}/image`, recipe.image)
-      .subscribe(_ => console.log('RecipeService: Update recipe image'),
-        (error) => this.notifyError('Could not update recipe image', error));
+    this.http
+      .put(`${this.url}/recipes/${recipe.id}/image`, recipe.image)
+      .subscribe(
+        _ => this.notifyUpdate(null, 'Update recipe image'),
+        (error) => this.notifyError('Could not update recipe image', error)
+      );
   }
 
   deleteRecipeImage(recipeId: string): void {
-    this.http.delete(`${this.url}/recipes/${recipeId}/image`)
-      .subscribe(_ => console.log('RecipeService: Deleted recipe image'),
-        (error) => this.notifyError('Could not delete recipe', error));
+    this.http
+      .delete(`${this.url}/recipes/${recipeId}/image`)
+      .subscribe(
+        _ => this.notifyUpdate(null, 'Deleted recipe image'),
+        (error) => this.notifyError('Could not delete recipe', error)
+      );
   }
 
   duplicateRecipe(recipeId: string): void {
-    const recipe = this.internalRecipes.find(r => r.id === recipeId);
+    const recipe = this.recipes.getValue().find(r => r.id === recipeId);
     this.addRecipe(recipe);
   }
 
   downloadRecipe(recipeId: string): void {
-    const recipe = JSON.stringify(this.internalRecipes.find(r => r.id === recipeId));
+    const recipe = JSON.stringify(this.recipes.getValue().find(r => r.id === recipeId));
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(recipe));
     element.setAttribute('download', 'recipe.json');
-
     element.style.display = 'none';
     document.body.appendChild(element);
-
     element.click();
-
     document.body.removeChild(element);
   }
 
-  update(): void {
-    this.recipes.next(this.internalRecipes);
+  notifyUpdate(recipes: Array<Recipe> | null, msg: string): void {
+    if (recipes) {
+      this.recipes.next(recipes);
+    }
+    console.log('RecipeService: ' + msg);
+    this.updateResult.next(UpdateResult.Success);
+  }
+
+  notifyError(msg: string, error: any): void {
+    console.error('RecipeService: ' + msg, error);
+    this.notifier.notify('error', msg);
+    this.updateResult.next(UpdateResult.Error);
   }
 }

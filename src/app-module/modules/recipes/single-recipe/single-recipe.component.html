@@ -12,7 +12,7 @@
 
   <div *ngIf="recipe">
     <app-top-buttons [editMode]="editMode"
-                     [recipeIsSaved]="!updatedInLast5secs"
+                     [updateResult]="recipeService.updateResult"
                      (navigateToRecipes)="navigateToRecipes()"
                      (editableToggled)="toggleEditable()"
                      (deleteRecipe)="deleteRecipe()"

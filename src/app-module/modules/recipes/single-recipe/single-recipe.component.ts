@@ -15,8 +15,6 @@ import {NotifierService} from 'angular-notifier';
 export class SingleRecipeComponent implements OnInit, OnDestroy {
   public recipe: Recipe;
   public editMode = false;
-  public updatedInLast5secs = false;
-
 
   private recipeSubscriber: Subscription;
 
@@ -24,7 +22,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
               private spinner: NgxSpinnerService,
               private activatedRoute: ActivatedRoute,
               private notifier: NotifierService,
-              private recipeService: RecipeService) {
+              public recipeService: RecipeService) {
   }
 
 
@@ -80,20 +78,14 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     this.updateRecipeWithoutImage();
   }
 
-  onRecipeTagsChanged(tags: Array<string>): void {
-    this.recipe.tags = new Set(tags);
+  onRecipeTagsChanged(tags: Set<string>): void {
+    this.recipe.tags = tags;
     this.updateRecipeWithoutImage();
   }
 
   updateRecipeWithoutImage(): void {
-    if (!this.updatedInLast5secs) {
-      this.updatedInLast5secs = true;
-      setTimeout(() => {
-        this.recipe.lastModified = new Date();
-        this.recipeService.updateRecipeWithoutImage(this.recipe);
-        this.updatedInLast5secs = false;
-      }, 3000);
-    }
+    this.recipe.lastModified = new Date();
+    this.recipeService.updateRecipeWithoutImage(this.recipe);
   }
 
   updateRecipeImage(): void {

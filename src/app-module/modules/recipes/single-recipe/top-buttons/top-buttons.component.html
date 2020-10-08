@@ -28,10 +28,11 @@
     <button
       class="btn btn-white"
       ngbTooltip="Saved Recipe">
-      <bi *ngIf="recipeIsSaved" style="color: black" name="Check-Circle"></bi>
+      <bi *ngIf="updateSuccessful()" style="color: black" name="Check-Circle"></bi>
+      <bi *ngIf="updateError()" style="color: black" name="Exclamation-Diamond"></bi>
       <div style="position: relative">
         <ngx-spinner class="p-2"
-          *ngIf="!recipeIsSaved"
+          *ngIf="updateWaiting()"
                      name="updatedRecipeSpinner"
                      bdColor="rgba(51,51,51,0)"
                      size="small"
@@ -39,7 +40,8 @@
                      [fullScreen]="false"
                      type="ball-spin-clockwise">
         </ngx-spinner>
-        <div *ngIf="recipeIsSaved" style="font-size: xx-small">Saved</div>
+        <div *ngIf="updateSuccessful()" style="font-size: xx-small">Saved</div>
+        <div *ngIf="updateError()" style="font-size: xx-small">Error Saving</div>
       </div>
     </button>
   </div>

@@ -1,3 +1,9 @@
+export enum UpdateResult {
+  Success,
+  Error,
+  Waiting
+}
+
 export class Difficulty {
   public static EASY = 'Easy';
   public static MEDIUM = 'Medium';
@@ -82,7 +88,7 @@ export class Recipe {
               public difficulty: Difficulty,
               public description: string,
               public title: string,
-              public tags: Set<string> | Array<string>,
+              public tags: Set<string>,
               public image: string,
               public instructions: Array<string>,
               public defaultServings: number) {
