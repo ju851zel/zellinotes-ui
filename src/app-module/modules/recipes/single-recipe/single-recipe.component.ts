@@ -4,6 +4,7 @@ import {Ingredient, Recipe} from '../../../model/recipe';
 import {RecipeService} from '../../../services/recipe-service/recipe.service';
 import {Subscription} from 'rxjs';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {NotifierService} from 'angular-notifier';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private spinner: NgxSpinnerService,
               private activatedRoute: ActivatedRoute,
+              private notifier: NotifierService,
               private recipeService: RecipeService) {
   }
 
@@ -70,37 +72,51 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
 
   onInstructionsUpdated(instructions: Array<string>): void {
     this.recipe.instructions = instructions;
-    this.updateRecipe();
+    this.updateRecipeWithoutImage();
   }
 
   onIngredientsUpdated(ingredients: Array<Ingredient>): void {
     this.recipe.ingredients = ingredients;
-    this.updateRecipe();
+    this.updateRecipeWithoutImage();
   }
 
   onRecipeTagsChanged(tags: Array<string>): void {
     this.recipe.tags = new Set(tags);
-    this.updateRecipe();
+    this.updateRecipeWithoutImage();
   }
 
-  updateRecipe(): void {
+  updateRecipeWithoutImage(): void {
     if (!this.updatedInLast5secs) {
       this.updatedInLast5secs = true;
       setTimeout(() => {
         this.recipe.lastModified = new Date();
-        this.recipeService.updateRecipe(this.recipe.id, this.recipe);
+        this.recipeService.updateRecipeWithoutImage(this.recipe);
         this.updatedInLast5secs = false;
       }, 3000);
     }
   }
 
-  onRecipeChanged(recipe: Recipe): void {
-    this.recipe = recipe;
-    this.updateRecipe();
+  updateRecipeImage(): void {
+    this.recipe.lastModified = new Date();
+    this.recipeService.updateRecipeImage(this.recipe);
   }
 
-  onImageChanged(image: string): void {
+  deleteRecipeImage(): void {
+    this.recipe.lastModified = new Date();
+    this.recipeService.deleteRecipeImage(this.recipe.id);
+  }
+
+  onRecipeChanged(recipe: Recipe): void {
+    this.recipe = recipe;
+    this.updateRecipeWithoutImage();
+  }
+
+  onImageChanged(image: string | null): void {
     this.recipe.image = image;
-    this.updateRecipe();
+    if (image) {
+      this.updateRecipeImage();
+    } else {
+      this.deleteRecipeImage();
+    }
   }
 }

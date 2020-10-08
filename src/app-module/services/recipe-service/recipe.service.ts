@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {Difficulty, Recipe} from '../../model/recipe';
 import {HttpClient} from '@angular/common/http';
+import {NotifierService} from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class RecipeService {
   private internalRecipes: Array<Recipe> = [];
   public readonly recipes = new BehaviorSubject<Array<Recipe>>(this.internalRecipes);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private notifier: NotifierService) {
   }
 
   addDefaultRecipe(): void {
@@ -58,8 +60,16 @@ export class RecipeService {
           recipes = recipes.map(recipe => Recipe.from(recipe));
           this.internalRecipes = recipes;
           this.update();
+        },
+        error => {
+          this.notifyError('Could not fetch all recipes', error);
         }
       );
+  }
+
+  notifyError(msg: string, error: any): void {
+    console.error('RecipeService: ' + msg, error);
+    this.notifier.notify('error', msg);
   }
 
   addRecipe(recipe: Recipe): void {
@@ -69,6 +79,8 @@ export class RecipeService {
           recipe.id = obj.$oid;
           this.internalRecipes.push(recipe);
           this.update();
+        }, (error) => {
+          this.notifyError('Could not add recipe', error);
         }
       );
   }
@@ -79,8 +91,33 @@ export class RecipeService {
           console.log('RecipeService: Deleted recipe');
           this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipeId);
           this.update();
+        }, (error) => {
+          this.notifyError('Could not delete recipe', error);
         }
       );
+  }
+
+  updateRecipeWithoutImage(recipe: Recipe): void{
+    const recipeToSend = recipe.clone();
+    recipeToSend.image = null;
+    this.http.put(`${this.url}/recipes/${recipe.id}`, recipeToSend)
+      .subscribe(
+        _ => console.log('RecipeService: Update recipe'),
+        error => {
+          this.notifyError('Could not update recipe', error)
+        });
+  }
+
+  updateRecipeImage(recipe: Recipe): void {
+    this.http.put(`${this.url}/recipes/${recipe.id}/image`, recipe.image)
+      .subscribe(_ => console.log('RecipeService: Update recipe image'),
+        (error) => this.notifyError('Could not update recipe image', error));
+  }
+
+  deleteRecipeImage(recipeId: string): void {
+    this.http.delete(`${this.url}/recipes/${recipeId}/image`)
+      .subscribe(_ => console.log('RecipeService: Deleted recipe image'),
+        (error) => this.notifyError('Could not delete recipe', error));
   }
 
   duplicateRecipe(recipeId: string): void {
@@ -100,18 +137,6 @@ export class RecipeService {
     element.click();
 
     document.body.removeChild(element);
-  }
-
-
-  updateRecipe(recipeId: string, recipe: Recipe): void {
-    this.http.put(`${this.url}/recipes/${recipe.id}`, recipe)
-      .subscribe(_ => {
-          console.log('RecipeService: Update recipe');
-          this.internalRecipes = this.internalRecipes.filter(rec => rec.id !== recipe.id);
-          this.internalRecipes.push(recipe);
-          this.update();
-        }
-      );
   }
 
   update(): void {

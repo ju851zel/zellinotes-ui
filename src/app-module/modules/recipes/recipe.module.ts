@@ -19,6 +19,49 @@ import {BasicPropertiesComponent} from './single-recipe/basic-properties/basic-p
 import {DndModule} from 'ngx-drag-drop';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {NotifierModule, NotifierOptions} from 'angular-notifier';
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+    horizontal: {
+      position: 'right',
+      distance: 24
+    },
+    vertical: {
+      position: 'top',
+      distance: 12,
+      gap: 10
+    }
+  },
+  theme: 'material',
+  behaviour: {
+    autoHide: 5000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 3
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 100,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 100,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 100,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
+
 
 @NgModule({
   declarations: [
@@ -34,17 +77,18 @@ import {NgxSpinnerModule} from 'ngx-spinner';
     TopButtonsComponent,
     BasicPropertiesComponent,
   ],
-  imports: [
-    CommonModule,
-    IconsModule,
-    NgxMasonryModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    NgbModule,
-    DndModule,
-    ImageCropperModule,
-    NgxSpinnerModule
-  ],
+    imports: [
+        CommonModule,
+        IconsModule,
+        NgxMasonryModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        NgbModule,
+        DndModule,
+        ImageCropperModule,
+        NgxSpinnerModule,
+      NotifierModule.withConfig(customNotifierOptions),
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RecipeModule {

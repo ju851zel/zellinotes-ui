@@ -8,8 +8,6 @@ import {AppRoutingModule} from './modules/app-routing/app-routing.module';
 import {NavbarComponent} from './navbar-component/navbar.component';
 import {HomeModule} from './modules/home/home.module';
 import {HttpClientModule} from '@angular/common/http';
-import {RecipeService} from './services/recipe-service/recipe.service';
-
 @NgModule({
   declarations: [
     AppComponent,

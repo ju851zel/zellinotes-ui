@@ -26,6 +26,7 @@
   </div>
   <input type="file"
          [hidden]="true"
+         accept="image/*"
          #fileInput
          (change)="onImageSelect($event)"/>
 
