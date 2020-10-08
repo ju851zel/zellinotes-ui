@@ -88,7 +88,7 @@ export class Recipe {
               public difficulty: Difficulty,
               public description: string,
               public title: string,
-              public tags: Set<string>,
+              public tags: Array<string>,
               public image: string,
               public instructions: Array<string>,
               public defaultServings: number) {

@@ -8,30 +8,30 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 export class TagsComponent implements OnInit, OnChanges {
 
   @Input() editMode: boolean;
-  @Input() defaultRecipeTags: Set<string>;
+  @Input() defaultRecipeTags: Array<string>;
 
-  recipeTags: Set<string>;
+  recipeTags: Array<string>;
 
   @Output()
-  recipeTagsChanged = new EventEmitter<Set<string>>();
+  recipeTagsChanged = new EventEmitter<Array<string>>();
 
   ngOnInit(): void {
-    this.recipeTags = new Set(this.defaultRecipeTags);
+    this.recipeTags = this.defaultRecipeTags;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.defaultRecipeTags && !changes.defaultRecipeTags.isFirstChange()) {
-      this.recipeTags = new Set(changes.defaultRecipeTags.currentValue);
+      this.recipeTags = changes.defaultRecipeTags.currentValue;
     }
   }
 
   createTagInputValue(): string {
-    const arr = [...this.recipeTags];
+    const arr = this.recipeTags;
     return arr.join(' ');
   }
 
   onTagUpdate(value: string): void {
-    this.recipeTags = new Set(value.split(' ').filter(tag => tag !== ''));
+    this.recipeTags = value.split(' ').filter(tag => tag !== '');
     this.recipeTagsChanged.emit(this.recipeTags);
   }
 }

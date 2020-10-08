@@ -31,7 +31,7 @@ export class RecipeService {
       Difficulty.EASY,
       '',
       'New Recipe',
-      new Set(),
+      [],
       null,
       [],
       2);
@@ -96,7 +96,7 @@ export class RecipeService {
         const recipeToSend = recipe.clone();
         recipeToSend.image = null;
         // @ts-ignore
-        recipeToSend.tags = [...recipeToSend.tags];
+        recipeToSend.tags = [...new Set(recipeToSend.tags)];
         this.http
           .put(`${this.url}/recipes/${recipe.id}`, recipeToSend)
           .subscribe(
@@ -108,6 +108,7 @@ export class RecipeService {
   }
 
   updateRecipeImage(recipe: Recipe): void {
+    this.updateResult.next(UpdateResult.Waiting);
     this.http
       .put(`${this.url}/recipes/${recipe.id}/image`, recipe.image)
       .subscribe(

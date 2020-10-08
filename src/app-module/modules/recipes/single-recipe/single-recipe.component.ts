@@ -78,7 +78,7 @@ export class SingleRecipeComponent implements OnInit, OnDestroy {
     this.updateRecipeWithoutImage();
   }
 
-  onRecipeTagsChanged(tags: Set<string>): void {
+  onRecipeTagsChanged(tags: Array<string>): void {
     this.recipe.tags = tags;
     this.updateRecipeWithoutImage();
   }
