@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Difficulty, Recipe, UpdateResult} from '../../model/recipe';
 import {HttpClient} from '@angular/common/http';
 import {NotifierService} from 'angular-notifier';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class RecipeService {
 
   addRecipe(recipe: Recipe): void {
     this.http
-      .post(`${this.url}/recipes`, recipe)
+      .post(`${this.url}/recipes/new`, recipe)
       .subscribe(
         (obj: { $oid: string }) => {
           recipe.id = obj.$oid;
@@ -76,6 +77,15 @@ export class RecipeService {
           this.notifyUpdate(recipes, 'Added new recipe');
         },
         (error) => this.notifyError('Could not add recipe', error)
+      );
+  }
+
+  addMultipleRecipes(recipes: [Recipe]): void {
+    this.http
+      .post(`${this.url}/recipes`, recipes)
+      .subscribe(
+        () => this.fetchAllRecipes(),
+        (error) => this.notifyError('Could not add recipes', error)
       );
   }
 
@@ -154,5 +164,10 @@ export class RecipeService {
     console.error('RecipeService: ' + msg, error);
     this.notifier.notify('error', msg);
     this.updateResult.next(UpdateResult.Error);
+  }
+
+
+  public downloadImageBase64FromUrl(imageUrl: string): Observable<Blob> {
+    return this.http.get(imageUrl, {responseType: 'blob'});
   }
 }

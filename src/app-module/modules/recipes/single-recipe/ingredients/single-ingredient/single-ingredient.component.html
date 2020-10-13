@@ -13,7 +13,7 @@
               (ngModelChange)="onMeasurementUnitUpdated($event)">
         <option *ngFor="let unit of allMeasurementUnits"
                 [ngValue]="unit">
-          {{ unit.title }}
+          {{ unit }}
         </option>
       </select>
     </div>

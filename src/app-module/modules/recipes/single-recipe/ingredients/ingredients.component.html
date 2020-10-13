@@ -27,7 +27,7 @@
                                  (ingredientChanged)="onSingleIngredientChanged(index, $event)"
                                  (deleteIngredient)="deleteIngredient(index)"></app-single-ingredient>
           <p *ngIf="viewMode()" class="m-0 text-center">
-            {{ ingredient.amount }} {{ ingredient.measurementUnit.abbreviation }} {{ ingredient.title }}
+            {{ ingredient.amount }} {{ ingredient.measurementUnit }} {{ ingredient.title }}
           </p>
         </div>
       </div>

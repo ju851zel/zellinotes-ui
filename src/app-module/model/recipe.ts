@@ -21,15 +21,28 @@ export class Difficulty {
   static isHardDifficulty(difficulty): boolean {
     return difficulty === Difficulty.HARD;
   }
+
+  static from(unit: string): Difficulty | null {
+    switch (unit) {
+      case 'Easy':
+        return Difficulty.EASY;
+      case 'Medium':
+        return Difficulty.MEDIUM;
+      case 'Hard':
+        return Difficulty.HARD;
+      default:
+        return null;
+    }
+  }
 }
 
 export class MeasurementUnit {
-  public static KILOGRAMM = new MeasurementUnit('kg.', 'kilogram');
-  public static GRAMM = new MeasurementUnit('gr.', 'gramm');
-  public static MILLILITER = new MeasurementUnit('ml.', 'milliliter');
-  public static LITER = new MeasurementUnit('l.', 'liter');
-  public static PIECE = new MeasurementUnit('pc.', 'piece');
-  public static PACK = new MeasurementUnit('pk.', 'pack');
+  public static KILOGRAMM = 'Kilogram';
+  public static GRAMM = 'Gramm';
+  public static MILLILITER = 'Milliliter';
+  public static LITER = 'Liter';
+  public static PIECE = 'Piece';
+  public static PACK = 'Pack';
 
   public static allUnits = [
     MeasurementUnit.KILOGRAMM,
@@ -40,8 +53,23 @@ export class MeasurementUnit {
     MeasurementUnit.PACK
   ];
 
-  private constructor(public abbreviation: string,
-                      public title: string) {
+  static from(unit: string): MeasurementUnit | null {
+    switch (unit) {
+      case 'Kilogram':
+        return MeasurementUnit.KILOGRAMM;
+      case 'Gramm':
+        return MeasurementUnit.GRAMM;
+      case 'Milliliter':
+        return MeasurementUnit.MILLILITER;
+      case 'Liter':
+        return MeasurementUnit.LITER;
+      case 'Piece':
+        return MeasurementUnit.PIECE;
+      case 'Pack':
+        return MeasurementUnit.PACK;
+      default:
+        return null;
+    }
   }
 
 }
@@ -52,6 +80,16 @@ export class Ingredient {
               public amount: number,
               public title: string,
               public measurementUnit: MeasurementUnit) {
+  }
+
+  static from(ing: any): Ingredient | null {
+    if (!!ing.id && typeof ing.id === 'string' &&
+      !!ing.amount && typeof ing.amount === 'number' &&
+      !!ing.title && typeof ing.title === 'string' &&
+      !!ing.measurementUnit && typeof MeasurementUnit.from(ing.measurementUnit) !== null) {
+      return new Ingredient(ing.id, ing.amount, ing.title, MeasurementUnit.from(ing.measurementUnit));
+    }
+    return null;
   }
 
   defined(): boolean {
@@ -94,13 +132,13 @@ export class Recipe {
               public defaultServings: number) {
   }
 
-  static from(recipe: Recipe): Recipe {
+  static from(recipe: any): Recipe | null {
     return new Recipe(
       recipe.id,
       recipe.cookingTimeInMinutes,
       recipe.created,
       recipe.lastModified,
-      recipe.ingredients.map(ing => ing.clone()),
+      recipe.ingredients.map(ing => Ingredient.from(ing)),
       recipe.version,
       recipe.difficulty,
       recipe.description,
@@ -108,9 +146,43 @@ export class Recipe {
       recipe.tags,
       recipe.image,
       recipe.instructions,
-      recipe.defaultServings,
-    );
+      recipe.defaultServings);
   }
+
+  static try_from(recipe: any): Recipe | null {
+    if (!!recipe.cookingTimeInMinutes && recipe.cookingTimeInMinutes > 0 && typeof recipe.cookingTimeInMinutes === 'number' &&
+      !!recipe.created && !isNaN(Date.parse(recipe.created)) &&
+      !!recipe.lastModified && !isNaN(Date.parse(recipe.lastModified)) &&
+      !!recipe.ingredients && recipe.ingredients.filter(ing => Ingredient.from(ing) === null).length === 0 &&
+      !!recipe.version && recipe.version === 1 &&
+      !!recipe.difficulty && Difficulty.from(recipe.difficulty) !== null &&
+      !!recipe.description && typeof recipe.description === 'string' &&
+      !!recipe.title && typeof recipe.title === 'string' &&
+      !!recipe.tags && this.isArrayOfStrings(recipe.tags) &&
+      recipe.image !== undefined && (typeof recipe.image === 'string' || recipe.image === null) &&
+      !!recipe.instructions && this.isArrayOfStrings(recipe.instructions) &&
+      !!recipe.defaultServings && typeof recipe.defaultServings === 'number') {
+      return new Recipe(
+        !!recipe.id ? recipe.id : '0',
+        recipe.cookingTimeInMinutes,
+        recipe.created,
+        recipe.lastModified,
+        recipe.ingredients.map(ing => Ingredient.from(ing)),
+        recipe.version,
+        recipe.difficulty,
+        recipe.description,
+        recipe.title,
+        recipe.tags,
+        recipe.image,
+        recipe.instructions,
+        recipe.defaultServings);
+    }
+  }
+
+  static isArrayOfStrings(value: any): boolean {
+    return Array.isArray(value) && value.every(item => typeof item === 'string');
+  }
+
 
   clone(): Recipe {
     return new Recipe(

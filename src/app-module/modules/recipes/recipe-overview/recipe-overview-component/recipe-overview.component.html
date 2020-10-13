@@ -13,12 +13,15 @@
       </button>
       <button class=" btn btn-primary mx-1"
               title="Upload recipes as JSON"
-              disabled
               data-toggle="modal"
               data-target="#modalUploadRecipes">
         <bi name="cloud-upload"></bi>
       </button>
-      <app-upload-recipes-modal></app-upload-recipes-modal>
+
+      <app-upload-recipes-modal
+        (singleRecipeUploading)="uploadSingleRecipe($event)"
+        (multipleRecipeUploading)="uploadMultipleRecipes($event)"
+      ></app-upload-recipes-modal>
 
       <button class="btn btn-primary mx-1"
               title="Download all recipes"

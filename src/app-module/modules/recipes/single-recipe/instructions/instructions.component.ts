@@ -41,8 +41,6 @@ export class InstructionsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.instructions = this.defaultInstructions.map(inst => inst);
-    console.log('defaultinst:', this.defaultInstructions);
-    console.log('inst:', this.defaultInstructions);
     this.addEmptyInstructionWhenNecessary();
   }
 
