@@ -1,3 +1,18 @@
+export interface Pagination {
+  page: number;
+  itemsPerPage: number;
+  ascending: boolean;
+  sort: PaginationSorting;
+}
+
+
+export enum PaginationSorting {
+  Title= 'Title',
+  Created = 'Created',
+  LastModified = 'Last Modified',
+}
+
+
 export enum UpdateResult {
   Success,
   Error,

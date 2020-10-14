@@ -20,6 +20,8 @@ import {DndModule} from 'ngx-drag-drop';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { RecipePaginationComponent } from './recipe-overview/recipe-pagination/recipe-pagination.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -76,19 +78,21 @@ const customNotifierOptions: NotifierOptions = {
     SingleIngredientComponent,
     TopButtonsComponent,
     BasicPropertiesComponent,
+    RecipePaginationComponent,
   ],
-    imports: [
-        CommonModule,
-        IconsModule,
-        NgxMasonryModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        NgbModule,
-        DndModule,
-        ImageCropperModule,
-        NgxSpinnerModule,
-      NotifierModule.withConfig(customNotifierOptions),
-    ],
+  imports: [
+    CommonModule,
+    IconsModule,
+    NgxMasonryModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    NgbModule,
+    DndModule,
+    ImageCropperModule,
+    NgxSpinnerModule,
+    NgxPaginationModule,
+    NotifierModule.withConfig(customNotifierOptions),
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RecipeModule {

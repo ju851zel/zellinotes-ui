@@ -3,7 +3,6 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {Difficulty, Recipe, UpdateResult} from '../../model/recipe';
 import {HttpClient} from '@angular/common/http';
 import {NotifierService} from 'angular-notifier';
-import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

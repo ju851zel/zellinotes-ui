@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Recipe} from '../../../../model/recipe';
+import {Component, Input, OnInit} from '@angular/core';
+import {Pagination, Recipe} from '../../../../model/recipe';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
 import {NgxMasonryOptions} from 'ngx-masonry';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -17,6 +17,10 @@ export class RecipeCardsComponent implements OnInit {
 
   recipes: Array<Recipe> = [];
 
+  @Input()
+  pagination: Pagination;
+
+
   constructor(private recipeService: RecipeService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
@@ -32,4 +36,5 @@ export class RecipeCardsComponent implements OnInit {
   navigateToSingleRecipe(id: string): void {
     this.router.navigate([`/recipes/${id}`], {relativeTo: this.activatedRoute});
   }
+
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
-import {Difficulty, Recipe} from '../../../../model/recipe';
+import {Pagination, Recipe} from '../../../../model/recipe';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -16,6 +16,7 @@ export class RecipeOverviewComponent implements OnInit {
   }
 
   recipes: any;
+  pagination: Pagination;
 
   ngOnInit(): void {
     this.fetchCurrentTabRecipes();
@@ -45,4 +46,10 @@ export class RecipeOverviewComponent implements OnInit {
   navigateToSingleRecipe(id: string): void {
     this.router.navigate([`/${id}`], {relativeTo: this.activatedRoute});
   }
+
+  paginationChanged(pagination: Pagination): void {
+    console.log(pagination);
+    this.pagination = pagination;
+  }
+
 }
