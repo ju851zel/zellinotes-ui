@@ -1,5 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Pagination, PaginationSorting} from '../../../../model/recipe';
+import {RecipeService} from '../../../../services/recipe-service/recipe.service';
 
 @Component({
   selector: 'app-recipe-pagination',
@@ -9,15 +10,14 @@ import {Pagination, PaginationSorting} from '../../../../model/recipe';
 
 export class RecipePaginationComponent implements OnInit {
 
-  constructor() {
+  constructor(private recipeService: RecipeService) {
   }
 
-  @Output()
-  paginationChanged = new EventEmitter<Pagination>();
   pagination: Pagination = {ascending: true, itemsPerPage: 10, page: 1, sort: PaginationSorting.Title};
 
+
   ngOnInit(): void {
-    this.paginationChanged.emit(this.pagination);
+    this.recipeService.pagination.subscribe(p => this.pagination = p);
   }
 
 
@@ -52,6 +52,7 @@ export class RecipePaginationComponent implements OnInit {
   }
 
   emit(): void {
-    this.paginationChanged.emit(this.pagination);
+    console.log('pagination updated');
+    this.recipeService.updatePagination(this.pagination);
   }
 }

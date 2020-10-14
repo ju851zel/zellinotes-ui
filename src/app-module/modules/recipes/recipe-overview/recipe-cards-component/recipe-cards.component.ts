@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Pagination, Recipe} from '../../../../model/recipe';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
 import {NgxMasonryOptions} from 'ngx-masonry';
@@ -13,13 +13,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class RecipeCardsComponent implements OnInit {
   public cardOptions: NgxMasonryOptions = {
     gutter: 15,
+    horizontalOrder: true,
+    fitWidth: true,
   };
 
   recipes: Array<Recipe> = [];
-
-  @Input()
   pagination: Pagination;
-
 
   constructor(private recipeService: RecipeService,
               private router: Router,
@@ -31,10 +30,15 @@ export class RecipeCardsComponent implements OnInit {
       this.recipes = recipes;
     });
     this.recipes = this.recipeService.recipes.getValue();
+    this.recipeService.pagination.subscribe((pagination) => {
+      this.pagination = pagination;
+    });
+    this.pagination = this.recipeService.pagination.getValue();
   }
 
   navigateToSingleRecipe(id: string): void {
     this.router.navigate([`/recipes/${id}`], {relativeTo: this.activatedRoute});
   }
+
 
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Difficulty, Recipe, UpdateResult} from '../../model/recipe';
+import {Difficulty, Pagination, PaginationSorting, Recipe, UpdateResult} from '../../model/recipe';
 import {HttpClient} from '@angular/common/http';
 import {NotifierService} from 'angular-notifier';
 
@@ -13,6 +13,7 @@ export class RecipeService {
   private url = 'http://127.0.0.1:8080/api/v1';
   private updateTimer = true;
 
+  public readonly pagination = new BehaviorSubject<Pagination>({ascending: true, itemsPerPage: 10, page: 1, sort: PaginationSorting.Title});
   public readonly recipes = new BehaviorSubject<Array<Recipe>>([]);
   public readonly updateResult = new BehaviorSubject<UpdateResult>(UpdateResult.Success);
 
@@ -38,22 +39,6 @@ export class RecipeService {
     this.addRecipe(recipe);
   }
 
-  // createTestRecipe(): Recipe {
-  //   return new Recipe(
-  //     '10',
-  //     30,
-  //     new Date(),
-  //     new Date(),
-  //     [],
-  //     1,
-  //     Difficulty.EASY,
-  //     'test description',
-  //     'test title',
-  //     new Set(['vegan', 'fast', 'test']),
-  //     null,
-  //     ['1', '2', '3', '4', '5'],
-  //     2);
-  // }
 
   fetchAllRecipes(): void {
     this.http
@@ -165,8 +150,47 @@ export class RecipeService {
     this.updateResult.next(UpdateResult.Error);
   }
 
+  updatePagination(pagination: Pagination): void {
+    this.pagination.next(pagination);
+    this.sortAccordingToPagination(pagination);
+  }
+
+  sortAccordingToPagination(pagination: Pagination): void {
+    const recipes = Object.assign([], this.recipes.getValue());
+    console.log(recipes[0]);
+    recipes.sort((r1, r2) => {
+      switch (pagination.sort) {
+        case PaginationSorting.Title:
+          return pagination.ascending ? r1.title.localeCompare(r2.title) : r2.title.localeCompare(r1.title);
+        case PaginationSorting.Created:
+          return pagination.ascending ? compareDate(r1.created, r2.created) : compareDate(r2.created, r1.created);
+        case PaginationSorting.LastModified:
+          return pagination.ascending ? compareDate(r1.lastModified, r2.lastModified) : compareDate(r2.lastModified, r1.lastModified);
+      }
+    });
+    console.log(recipes[0]);
+    this.recipes.next(recipes);
+  }
 
   public downloadImageBase64FromUrl(imageUrl: string): Observable<Blob> {
     return this.http.get(imageUrl, {responseType: 'blob'});
+  }
+}
+
+function compareDate(date1: Date, date2: Date): number {
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+
+  const same = d1.getTime() === d2.getTime();
+  if (same) {
+    return 0;
+  }
+
+  if (d1 > d2) {
+    return 1;
+  }
+
+  if (d1 < d2) {
+    return -1;
   }
 }

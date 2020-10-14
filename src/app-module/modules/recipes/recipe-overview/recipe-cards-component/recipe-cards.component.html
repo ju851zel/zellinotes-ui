@@ -3,16 +3,20 @@
     <h2>You don't have any recipes. Create one.</h2>
   </div>
 
-  <ngx-masonry [options]="cardOptions" [updateLayout]="pagination.page">
-    <div ngxMasonryItem class="recipe-card card text-center"
+
+  <div class="row card-deck d-flex justify-content-center">
+    <div class="recipe-card card text-center m-2"
          *ngFor="let recipe of recipes | paginate: {itemsPerPage: pagination.itemsPerPage, currentPage:pagination.page, id: 'custom'}">
       <img class="card-img recipe-card-image card-img-top" [src]="recipe.image" alt=""/>
-      <h5 class="card-title mt-2">{{ recipe.title }}</h5>
-      <div class="card-text">{{ recipe.description }}</div>
-      <button class="m-3 btn btn-success"
-              (click)="navigateToSingleRecipe(recipe.id)">
-        Open Recipe
-      </button>
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.title }}</h5>
+        <p class="card-text">{{ recipe.description }}</p>
+        <button class=" btn btn-success"
+                (click)="navigateToSingleRecipe(recipe.id)">
+          Open Recipe
+        </button>
+      </div>
     </div>
-  </ngx-masonry>
+  </div>
+
 </div>
