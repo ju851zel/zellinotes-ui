@@ -22,8 +22,8 @@
 </div>
 <h4 *ngIf="!editMode"> {{ recipe.description }}</h4>
 
-<div class="row mt-4 justify-content-around">
-  <div class="col-sm-auto text-center">
+<div class="row mt-4">
+  <div [class.col-6]="editMode" [class.col-4]="!editMode" class="text-center">
     <!--recipe-difficulty-->
     <bi ngbTooltip="Difficulty" class="text-warning width-50px" name="bullseye"></bi>
     <p *ngIf="!editMode" class="form-label">{{ recipe.difficulty }}</p>
@@ -51,7 +51,7 @@
   </div>
 
   <!--recipe-servings-->
-  <div class="col-sm-auto text-center">
+  <div [class.col-6]="editMode" [class.col-4]="!editMode" class="text-center">
     <bi ngbTooltip="Servings" class="text-warning width-50px" name="people"></bi>
     <p *ngIf="!editMode"
        class="form-label ">
@@ -70,7 +70,7 @@
   </div>
 
   <!--recipe-total-time-->
-  <div class="col-sm-auto text-center">
+  <div [class.col-12]="editMode" [class.col-4]="!editMode" class="text-center">
     <bi ngbTooltip="Cooking time" class="text-warning width-50px" name="clock"></bi>
     <p *ngIf="!editMode" class="form-label ">
       {{ formatCookingTimeToHourMin(recipe.cookingTimeInMinutes) }}
