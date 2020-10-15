@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RecipeService} from '../../../../services/recipe-service/recipe.service';
-import {Recipe} from '../../../../model/recipe';
+import {Pagination, PaginationSorting, Recipe} from '../../../../model/recipe';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -15,9 +15,45 @@ export class RecipeOverviewComponent implements OnInit {
               private activatedRoute: ActivatedRoute) {
   }
 
+  pagination: Pagination;
+
   ngOnInit(): void {
     this.fetchCurrentTabRecipes();
+    this.recipeService.pagination.subscribe(p => this.pagination = p);
+    this.pagination = this.recipeService.pagination.getValue();
   }
+
+
+  itemsPerPageUpdated(itemsPerPage: number): void {
+    this.pagination.itemsPerPage = itemsPerPage;
+    this.emit();
+  }
+
+  ascendingUpdated(ascending: boolean): void {
+    this.pagination.ascending = ascending;
+    this.emit();
+  }
+
+  sortingSetTitle(): void {
+    this.pagination.sort = PaginationSorting.Title;
+    this.emit();
+  }
+
+  sortingSetLastModified(): void {
+    this.pagination.sort = PaginationSorting.LastModified;
+    this.emit();
+  }
+
+  sortingSetCreated(): void {
+    this.pagination.sort = PaginationSorting.Created;
+    this.emit();
+  }
+
+  emit(): void {
+    console.log('Sorting updated');
+    this.recipeService.updatePagination(this.pagination);
+  }
+
 
   createDefaultRecipe(): void {
     this.recipeService.addDefaultRecipe();

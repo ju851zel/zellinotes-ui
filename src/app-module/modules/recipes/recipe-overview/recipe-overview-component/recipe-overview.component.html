@@ -14,19 +14,50 @@
         <bi name="cloud-download"></bi>
       </button>
 
+      <!--sorting-->
+      <div class="dropdown d-inline ml-2">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownSorting" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+          {{ pagination.sort }} <bi [name]="pagination.ascending? 'sort-up' : 'sort-down'"></bi>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownSorting">
+          <a class="dropdown-item" [class.active]="pagination.itemsPerPage === 10" (click)="itemsPerPageUpdated(10)">10</a>
+          <a class="dropdown-item" [class.active]="pagination.itemsPerPage === 25" (click)="itemsPerPageUpdated(25)">25</a>
+          <a class="dropdown-item" [class.active]="pagination.itemsPerPage === 50" (click)="itemsPerPageUpdated(50)">50</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [class.active]="pagination.ascending"
+             (click)="ascendingUpdated(true)">
+            <bi name="sort-up"></bi>
+            Ascending</a>
+          <a class="dropdown-item" [class.active]="!pagination.ascending"
+             (click)="ascendingUpdated(false)">
+            <bi name="sort-down"></bi>
+            Descending</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [class.active]="pagination.sort === 'Title'"
+             (click)="sortingSetTitle()">Title</a>
+          <a class="dropdown-item" [class.active]="pagination.sort === 'Last Modified'"
+             (click)="sortingSetLastModified()">Last modified</a>
+          <a class="dropdown-item" [class.active]="pagination.sort === 'Created'"
+             (click)="sortingSetCreated()">Created</a>
+        </div>
+      </div>
+
+
+      <!--more dropdown-->
       <div class="dropleft d-inline float-right">
 
         <button class="btn btn-primary dropdown-toggle"
                 type="button"
-                id="dropdownMenuButton"
+                id="dropdownMore"
                 data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
           More
         </button>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div class="dropdown-menu" aria-labelledby="dropdownMore">
 
-          <a class="dropdown-item" (click)="downloadRecipes()">
+          <a class="dropdown-item disabled" (click)="downloadRecipes()">
             <bi name="download"></bi>
             Download all
           </a>
@@ -47,13 +78,14 @@
     </div>
   </div>
 
-  <div class="row mt-2">
-    <app-recipe-pagination></app-recipe-pagination>
-  </div>
-
   <div class="row mt-3">
     <div class="col">
       <app-recipe-cards></app-recipe-cards>
     </div>
   </div>
+
+  <div class="row mt-2">
+    <app-recipe-pagination></app-recipe-pagination>
+  </div>
+
 </div>

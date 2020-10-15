@@ -13,11 +13,11 @@ export class RecipePaginationComponent implements OnInit {
   constructor(private recipeService: RecipeService) {
   }
 
-  pagination: Pagination = {ascending: true, itemsPerPage: 10, page: 1, sort: PaginationSorting.Title};
-
+  pagination: Pagination;
 
   ngOnInit(): void {
     this.recipeService.pagination.subscribe(p => this.pagination = p);
+    this.pagination = this.recipeService.pagination.getValue();
   }
 
 
