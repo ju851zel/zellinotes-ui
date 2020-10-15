@@ -1,15 +1,21 @@
 <div class="border rounded border-grey p-2 my-auto">
-  <ul class="list-inline my-0">
+  <ul *ngIf="editMode || (!editMode && recipeTags.length > 0)" class="list-inline my-0">
     <li *ngFor="let tag of recipeTags" class="list-inline-item my-1">
       <button class="btn btn-primary btn-sm">
         {{ tag }}
       </button>
     </li>
   </ul>
+
+  <div *ngIf="!editMode && recipeTags.length === 0"
+     style="color: darkgrey">
+    No tags assigned
+  </div>
+
   <div *ngIf="editMode">
     <input type="text" class="form-control"
            id="tag-input"
-           placeholder="vegan"
+           placeholder="eg. vegan"
            [ngModel]="createTagInputValue()"
            (ngModelChange)="onTagUpdate($event)">
   </div>
