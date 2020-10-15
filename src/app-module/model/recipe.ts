@@ -7,7 +7,7 @@ export interface Pagination {
 
 
 export enum PaginationSorting {
-  Title= 'Title',
+  Title = 'Title',
   Created = 'Created',
   LastModified = 'Last Modified',
 }
@@ -67,6 +67,17 @@ export class MeasurementUnit {
     MeasurementUnit.PIECE,
     MeasurementUnit.PACK
   ];
+
+  static shortUnit(unit: MeasurementUnit): string {
+    switch (unit) {
+      case this.KILOGRAMM: return 'kg.';
+      case this.GRAMM: return 'gr.';
+      case this.MILLILITER: return 'ml.';
+      case this.LITER: return 'l.';
+      case this.PIECE: return 'pc.';
+      case this.PACK: return 'pack';
+    }
+  }
 
   static from(unit: string): MeasurementUnit | null {
     switch (unit) {

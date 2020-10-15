@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Ingredient} from '../../../../model/recipe';
+import {Ingredient, MeasurementUnit} from '../../../../model/recipe';
 import * as lastElement from 'lodash/last';
 
 @Component({
@@ -96,4 +96,7 @@ export class IngredientsComponent implements OnInit, OnChanges {
     return lastElement(this.ingredients)?.notDefined();
   }
 
+  shortUnit(unit: MeasurementUnit): string {
+    return MeasurementUnit.shortUnit(unit);
+  }
 }
