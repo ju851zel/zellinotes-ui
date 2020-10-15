@@ -138,7 +138,7 @@ export class RecipeService {
 
   notifyUpdate(recipes: Array<Recipe> | null, msg: string): void {
     if (recipes) {
-      this.recipes.next(recipes);
+      this.recipes.next(this.sortByPagination(recipes));
     }
     console.log('RecipeService: ' + msg);
     this.updateResult.next(UpdateResult.Success);
@@ -152,11 +152,14 @@ export class RecipeService {
 
   updatePagination(pagination: Pagination): void {
     this.pagination.next(pagination);
-    this.sortAccordingToPagination(pagination);
+    const recipes = this.sortByPagination(this.recipes.getValue());
+    this.recipes.next(recipes);
   }
 
-  sortAccordingToPagination(pagination: Pagination): void {
-    const recipes = Object.assign([], this.recipes.getValue());
+  sortByPagination(recipesBefore: Array<Recipe>): Array<Recipe> {
+    const recipes = Object.assign([], recipesBefore);
+    const pagination = this.pagination.getValue();
+    console.log(pagination);
     console.log(recipes[0]);
     recipes.sort((r1, r2) => {
       switch (pagination.sort) {
@@ -169,7 +172,7 @@ export class RecipeService {
       }
     });
     console.log(recipes[0]);
-    this.recipes.next(recipes);
+    return recipes;
   }
 
   public downloadImageBase64FromUrl(imageUrl: string): Observable<Blob> {
